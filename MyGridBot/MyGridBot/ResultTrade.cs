@@ -1,5 +1,6 @@
 ﻿using Bybit.Net.Clients;
 using ClosedXML.Excel;
+using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System;
@@ -111,7 +112,6 @@ namespace MyGridBot
 
         public static void TimerRevers(int seconds)
         {
-
             Console.ForegroundColor= ConsoleColor.White;
             Console.WriteLine();
             Console.WriteLine(" Можно остановить консоль и редактировать все ексель файлы");
@@ -123,6 +123,25 @@ namespace MyGridBot
                 Console.WriteLine(new DateTime(ticks).ToString("      HH:mm:ss"));
                 Thread.Sleep(850);
                 dt = dt.AddSeconds(1);
+            }
+        }
+        public static async Task<BybitRestClient> TestTimeSpan(BybitRestClient bybitRestClient)
+        {
+            int t = 5;
+            WebCallResult<IEnumerable<Bybit.Net.Objects.Models.Spot.BybitSpotBalance>> balance = null;
+            while (true)
+            {
+                balance = await bybitRestClient.SpotApiV3.Account.GetBalancesAsync();
+                if (balance.Error == null) { return bybitRestClient; }
+                else if(balance.Error.Code == 10002 )
+                {
+                    t += 5;
+                    bybitRestClient = new BybitRestClient(options =>
+                    {
+                        options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
+                        options.ReceiveWindow = TimeSpan.FromSeconds(t);
+                    });
+                }
             }
         }
     }

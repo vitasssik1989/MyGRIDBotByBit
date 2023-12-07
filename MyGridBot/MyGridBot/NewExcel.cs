@@ -91,7 +91,7 @@ namespace MyGridBot
 
                                     sheet.Cell(i, 7).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
                                     sheet.Cell(i, 8).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
-                                    sheet.Cell(i,8).Value = symbol.MinOrderQuantity+symbol.BasePrecision;
+                                    sheet.Cell(i, 8).Value = symbol.MinOrderQuantity + symbol.BasePrecision;
                                 }
                                 workbook.SaveAs($@"..\\..\\..\\..\\Work\\{tradingPair}.xlsx");
                             }
@@ -107,6 +107,77 @@ namespace MyGridBot
                 }
             }
         }
+
+        public static async Task Setka(string tradingPair, BybitRestClient bybitRestClient)
+        {
+            WebCallResult<System.Collections.Generic.IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotSymbolV3>> symbolData;
+            while (true)
+            {
+                try
+                {
+                    symbolData = await bybitRestClient.SpotApiV3.ExchangeData.GetSymbolsAsync();
+                    if (symbolData.ResponseStatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        break;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            foreach (var symbol in symbolData.Data)
+            {
+                if (symbol.Alias == tradingPair)
+                {
+                    while (true)
+                    {
+                        try
+                        {
+
+                            using (var workbook = new XLWorkbook(@$"..\\..\\..\\..\\Work\\{tradingPair}.xlsx"))
+                            {
+                                var sheet = workbook.Worksheet(1);
+                                Console.WriteLine();
+                                Console.WriteLine($" Введите максимальную цену и нажмите ENTER\n" +
+                                                  $" Пример ввода: {symbol.PricePrecision} ");
+                                decimal haigPrice = Kultura(Console.ReadLine());
+
+                                Console.WriteLine($" Введите шаг цены и нажмите ENTER\n" +
+                                                  $" Пример ввода: {symbol.PricePrecision}");
+                                decimal priceStep = Kultura(Console.ReadLine());
+
+                                Console.WriteLine($" Введите процент и нажмите ENTER\n" +
+                                                  $" После запятой не больше 3 цифр\n" +
+                                                  $" Пример ввода: 2,125");
+                                decimal precent = Kultura(Console.ReadLine());
+                                sheet.Cell(2, 2).Value = haigPrice;
+                                sheet.Cell(2, 3).Value = MyСalculation(haigPrice, precent, symbol.PricePrecision.ToString());
+                                for (int i = 3; i <= 5001; i++)
+                                {
+                                    if (haigPrice > 0)
+                                    {
+                                        haigPrice -= priceStep;
+                                        sheet.Cell(i, 2).Value = haigPrice;
+                                        sheet.Cell(i, 3).Value = MyСalculation(haigPrice, precent, symbol.PricePrecision.ToString());
+                                    }
+                                    else { break; }
+
+                                }
+                                workbook.Save();
+                            }
+                            break;
+                        }
+                        catch
+                        {
+                            Thread.Sleep(10000);
+                            Console.WriteLine($" Не смог открыть ексель {tradingPair}.xlsx в папке Work");
+                        }
+                    }
+                    break;
+                }
+            }
+        }
         static string FormatZeroСomma(decimal PricePrecision)
         {
             string priceP = PricePrecision.ToString();
@@ -114,19 +185,19 @@ namespace MyGridBot
             foreach (var item in priceP)
             {
 
-                if(item == '1')
+                if (item == '1')
                 {
                     result += '0';
                     continue;
                 }
-                if(item == ',')
+                if (item == ',')
                 {
                     result += '.';
                     continue;
                 }
                 result += '0';
             }
-            return  result;
+            return result;
         }
         static int ValueAfterComma(decimal BasePrecision)
         {
@@ -137,6 +208,26 @@ namespace MyGridBot
                 return 0;
             }
             return a.Length - 2;
+        }
+        static decimal Kultura(string kultyra)
+        {
+            decimal result = 0;
+            if (decimal.TryParse(kultyra.Replace(',', '.'), out decimal H))
+            {
+                result = H;
+            }
+            else
+            {
+                if (decimal.TryParse(kultyra.Replace('.', ','), out decimal Hh))
+                {
+                    result = Hh;
+                }
+            }
+            return result;
+        }
+        static decimal MyСalculation(decimal price, decimal precent, string PricePrecision)
+        {
+            return Math.Round(price + (price / 100 * precent), PricePrecision.Length - 2);
         }
     }
 }
