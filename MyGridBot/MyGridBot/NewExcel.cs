@@ -67,6 +67,7 @@ namespace MyGridBot
                                 string formatCommaPrice = FormatZeroСomma(symbol.PricePrecision);
                                 string formatCommaBase = FormatZeroСomma(symbol.BasePrecision);
                                 sheet.Cell(2, 15).Value = ValueAfterComma(symbol.BasePrecision);
+                                decimal minQty = Math.Round(symbol.MinOrderQuantity + (symbol.MinOrderQuantity / 100 * 0.1m),formatCommaBase.Length-2);
                                 for (int i = 2; i <= 5001; i++)
                                 {
                                     sheet.Cell(i, 1).Value = 0;
@@ -91,7 +92,8 @@ namespace MyGridBot
 
                                     sheet.Cell(i, 7).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
                                     sheet.Cell(i, 8).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
-                                    sheet.Cell(i, 8).Value = symbol.MinOrderQuantity + symbol.BasePrecision;
+                                    
+                                    sheet.Cell(i, 8).Value = minQty;
                                 }
                                 workbook.SaveAs($@"..\\..\\..\\..\\Work\\{tradingPair}.xlsx");
                             }
