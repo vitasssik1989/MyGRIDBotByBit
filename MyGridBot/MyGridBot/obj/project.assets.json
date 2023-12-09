@@ -5422,11 +5422,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+      "projectUniqueName": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
       "projectName": "MyGridBot",
-      "projectPath": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+      "projectPath": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
       "packagesPath": "C:\\Users\\vitas\\.nuget\\packages\\",
-      "outputPath": "D:\\MyGridBot\\MyGridBot\\obj\\",
+      "outputPath": "O:\\MyGridBot\\MyGridBot\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

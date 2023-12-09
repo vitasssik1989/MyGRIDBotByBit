@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sQlMokBXiDZKWvfpulAqO0N4aWxwAEPHvsXNSC8xJVwACc3w5sz6SiqW9Q9aq+aUBqdlgSAHrWFCpN9rbL8oOA==",
+  "dgSpecHash": "GllISRw0YINNLldBpU6T3i9pQpN9/Cf1s9tCACyh7h1TfR1Me38Q/93ece2gkrAkQJowH3d6zR4aenWSk6EErA==",
   "success": true,
-  "projectFilePath": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+  "projectFilePath": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vitas\\.nuget\\packages\\bybit.net\\3.2.3\\bybit.net.3.2.3.nupkg.sha512",
     "C:\\Users\\vitas\\.nuget\\packages\\closedxml\\0.95.0\\closedxml.0.95.0.nupkg.sha512",
