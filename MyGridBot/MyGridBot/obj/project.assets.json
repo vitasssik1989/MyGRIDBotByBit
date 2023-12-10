@@ -2,10 +2,10 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "Bybit.Net/3.2.3": {
+      "Bybit.Net/3.2.5": {
         "type": "package",
         "dependencies": {
-          "CryptoExchange.Net": "6.2.0"
+          "CryptoExchange.Net": "6.2.3"
         },
         "compile": {
           "lib/netstandard2.1/Bybit.Net.dll": {
@@ -51,7 +51,7 @@
           "lib/netstandard2.0/ClosedXML.Report.dll": {}
         }
       },
-      "CryptoExchange.Net/6.2.0": {
+      "CryptoExchange.Net/6.2.3": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.32",
@@ -1654,15 +1654,15 @@
     }
   },
   "libraries": {
-    "Bybit.Net/3.2.3": {
-      "sha512": "hk6Uw9/huumj2gejoyVIwQTGHx92Xyenu0Xo45IDj862HnHehFauhyr3s8POMKERQwGGZ9yVTGLxwqXNUsc7KQ==",
+    "Bybit.Net/3.2.5": {
+      "sha512": "caa/2Qmm14ix+kkWx4uPDlQTjeYrsu66tPSDpm8jKUOV4pqsJrfyODXPZJMqgkGDS42RXdUypJ8Q/4oEMpvvfA==",
       "type": "package",
-      "path": "bybit.net/3.2.3",
+      "path": "bybit.net/3.2.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
-        "bybit.net.3.2.3.nupkg.sha512",
+        "bybit.net.3.2.5.nupkg.sha512",
         "bybit.net.nuspec",
         "icon.png",
         "lib/netstandard2.0/Bybit.Net.dll",
@@ -1705,14 +1705,14 @@
         "lib/netstandard2.0/ClosedXML.Report.dll"
       ]
     },
-    "CryptoExchange.Net/6.2.0": {
-      "sha512": "zjQ/EeD4IkkAvUtBveQiuK++xyLkP1EKxoBnxRO7Z0+oOHqKSm+f7P4tzcQ/vgWeSJv64bTkzZE9m3FAhAqnRA==",
+    "CryptoExchange.Net/6.2.3": {
+      "sha512": "mmUx52C/BYy5HHcdANcnyvOfLenCf5gOW3ugvJlcndujR252fynU8mOu3Q4tmCqa/NcY4h7TqIm9ZOzUYx0OyQ==",
       "type": "package",
-      "path": "cryptoexchange.net/6.2.0",
+      "path": "cryptoexchange.net/6.2.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "cryptoexchange.net.6.2.0.nupkg.sha512",
+        "cryptoexchange.net.6.2.3.nupkg.sha512",
         "cryptoexchange.net.nuspec",
         "lib/netstandard2.0/CryptoExchange.Net.dll",
         "lib/netstandard2.0/CryptoExchange.Net.xml",
@@ -5411,7 +5411,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Bybit.Net >= 3.2.3",
+      "Bybit.Net >= 3.2.5",
       "ClosedXML.Report >= 0.2.3"
     ]
   },
@@ -5422,11 +5422,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+      "projectUniqueName": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
       "projectName": "MyGridBot",
-      "projectPath": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+      "projectPath": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
       "packagesPath": "C:\\Users\\vitas\\.nuget\\packages\\",
-      "outputPath": "O:\\MyGridBot\\MyGridBot\\obj\\",
+      "outputPath": "D:\\MyGridBot\\MyGridBot\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -5462,7 +5462,7 @@
         "dependencies": {
           "Bybit.Net": {
             "target": "Package",
-            "version": "[3.2.3, )"
+            "version": "[3.2.5, )"
           },
           "ClosedXML.Report": {
             "target": "Package",

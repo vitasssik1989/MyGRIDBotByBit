@@ -8,21 +8,21 @@
     ".NETCoreApp,Version=v6.0": {
       "MyGridBot/1.0.0": {
         "dependencies": {
-          "Bybit.Net": "3.2.3",
+          "Bybit.Net": "3.2.5",
           "ClosedXML.Report": "0.2.3"
         },
         "runtime": {
           "MyGridBot.dll": {}
         }
       },
-      "Bybit.Net/3.2.3": {
+      "Bybit.Net/3.2.5": {
         "dependencies": {
-          "CryptoExchange.Net": "6.2.0"
+          "CryptoExchange.Net": "6.2.3"
         },
         "runtime": {
           "lib/netstandard2.1/Bybit.Net.dll": {
-            "assemblyVersion": "3.2.3.0",
-            "fileVersion": "3.2.3.0"
+            "assemblyVersion": "3.2.5.0",
+            "fileVersion": "3.2.5.0"
           }
         }
       },
@@ -53,7 +53,7 @@
           }
         }
       },
-      "CryptoExchange.Net/6.2.0": {
+      "CryptoExchange.Net/6.2.3": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.32",
           "Microsoft.Extensions.Http": "3.1.32",
@@ -62,8 +62,8 @@
         },
         "runtime": {
           "lib/netstandard2.1/CryptoExchange.Net.dll": {
-            "assemblyVersion": "6.2.0.0",
-            "fileVersion": "6.2.0.0"
+            "assemblyVersion": "6.2.3.0",
+            "fileVersion": "6.2.3.0"
           }
         }
       },
@@ -960,12 +960,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Bybit.Net/3.2.3": {
+    "Bybit.Net/3.2.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hk6Uw9/huumj2gejoyVIwQTGHx92Xyenu0Xo45IDj862HnHehFauhyr3s8POMKERQwGGZ9yVTGLxwqXNUsc7KQ==",
-      "path": "bybit.net/3.2.3",
-      "hashPath": "bybit.net.3.2.3.nupkg.sha512"
+      "sha512": "sha512-caa/2Qmm14ix+kkWx4uPDlQTjeYrsu66tPSDpm8jKUOV4pqsJrfyODXPZJMqgkGDS42RXdUypJ8Q/4oEMpvvfA==",
+      "path": "bybit.net/3.2.5",
+      "hashPath": "bybit.net.3.2.5.nupkg.sha512"
     },
     "ClosedXML/0.95.0": {
       "type": "package",
@@ -981,12 +981,12 @@
       "path": "closedxml.report/0.2.3",
       "hashPath": "closedxml.report.0.2.3.nupkg.sha512"
     },
-    "CryptoExchange.Net/6.2.0": {
+    "CryptoExchange.Net/6.2.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zjQ/EeD4IkkAvUtBveQiuK++xyLkP1EKxoBnxRO7Z0+oOHqKSm+f7P4tzcQ/vgWeSJv64bTkzZE9m3FAhAqnRA==",
-      "path": "cryptoexchange.net/6.2.0",
-      "hashPath": "cryptoexchange.net.6.2.0.nupkg.sha512"
+      "sha512": "sha512-mmUx52C/BYy5HHcdANcnyvOfLenCf5gOW3ugvJlcndujR252fynU8mOu3Q4tmCqa/NcY4h7TqIm9ZOzUYx0OyQ==",
+      "path": "cryptoexchange.net/6.2.3",
+      "hashPath": "cryptoexchange.net.6.2.3.nupkg.sha512"
     },
     "DocumentFormat.OpenXml/2.7.2": {
       "type": "package",

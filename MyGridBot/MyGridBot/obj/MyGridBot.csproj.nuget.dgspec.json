@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj": {}
+    "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj": {}
   },
   "projects": {
-    "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj": {
+    "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+        "projectUniqueName": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
         "projectName": "MyGridBot",
-        "projectPath": "O:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
+        "projectPath": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
         "packagesPath": "C:\\Users\\vitas\\.nuget\\packages\\",
-        "outputPath": "O:\\MyGridBot\\MyGridBot\\obj\\",
+        "outputPath": "D:\\MyGridBot\\MyGridBot\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -47,7 +47,7 @@
           "dependencies": {
             "Bybit.Net": {
               "target": "Package",
-              "version": "[3.2.3, )"
+              "version": "[3.2.5, )"
             },
             "ClosedXML.Report": {
               "target": "Package",

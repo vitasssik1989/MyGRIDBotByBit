@@ -18,7 +18,7 @@ namespace MyGridBot
         static decimal TotalBalanceUSDT { get; set; } = 0;
         static int Copy { get; set; } = 0;
 
-        public static async Task Balance(BybitRestClient bybitRestClient)
+        public static async Task Balance(BybitRestClient bybitRestClient, DateTime dateTime)
         {
             Copy++;
             Console.WriteLine();
@@ -40,6 +40,10 @@ namespace MyGridBot
             TotalBalanceUSDT = 0;
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine();
+            var dt = DateTime.Now;
+            var timeElapsed = dt - dateTime;
+            Console.WriteLine($" Время работы: \n" +
+                              $" Дни: {timeElapsed.Days}  {timeElapsed.Hours:00}:{timeElapsed.Minutes:00}:{timeElapsed.Seconds:00}");
             foreach (var Symbol in SettingStart.SymbolList)
             {
                 //USDT
@@ -140,6 +144,7 @@ namespace MyGridBot
                     {
                         options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
                         options.ReceiveWindow = TimeSpan.FromSeconds(t);
+                        options.TimestampRecalculationInterval = TimeSpan.FromSeconds(5);
                     });
                 }
             }

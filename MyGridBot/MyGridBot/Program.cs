@@ -1,6 +1,7 @@
 ﻿using Bybit.Net.Clients;
 using ClosedXML.Excel;
 using CryptoExchange.Net.Authentication;
+using CryptoExchange.Net.Objects.Options;
 using System.Globalization;
 
 namespace MyGridBot
@@ -9,17 +10,21 @@ namespace MyGridBot
     {
         static async Task Main(string[] args)
         {
+            var dateTime = DateTime.Now;
             Console.Title = "MyGridBot V1.0";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(" Начинаю работу");
             SettingStart.Start();
-
+            
             BybitRestClient bybitRestClient = new BybitRestClient(options =>
             {
                 options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
                 options.ReceiveWindow = TimeSpan.FromSeconds(5);
+                options.TimestampRecalculationInterval = TimeSpan.FromSeconds(5);
+                options.AutoTimestamp = true;
             });
-            bybitRestClient = await ResultTrade.TestTimeSpan(bybitRestClient);
+            //bybitRestClient = await ResultTrade.TestTimeSpan(bybitRestClient);
+            
             Console.WriteLine(" Хотите создать новую ексель для торговой пары?\n" +
                               " Напишите ДА или НЕТ и нижмите ENTER");
             while (true)
@@ -71,7 +76,7 @@ namespace MyGridBot
             {
                 await Trader.Buy(bybitRestClient);
                 await Trader.Sell(bybitRestClient);
-                await ResultTrade.Balance(bybitRestClient);
+                await ResultTrade.Balance(bybitRestClient,dateTime);
                 SettingStart.UpdateSymbolList();
                 ResultTrade.TimerRevers(5);
             }
