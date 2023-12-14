@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "Bybit.Net/3.2.5": {
+      "Bybit.Net/3.2.6": {
         "type": "package",
         "dependencies": {
           "CryptoExchange.Net": "6.2.3"
@@ -1654,15 +1654,15 @@
     }
   },
   "libraries": {
-    "Bybit.Net/3.2.5": {
-      "sha512": "caa/2Qmm14ix+kkWx4uPDlQTjeYrsu66tPSDpm8jKUOV4pqsJrfyODXPZJMqgkGDS42RXdUypJ8Q/4oEMpvvfA==",
+    "Bybit.Net/3.2.6": {
+      "sha512": "SfN5r6UphpmXHlbkhEJNDJseHvHC8RH6jleoET5N3VwCTTAtFPwPu0mlNNLJs4NnGP8hq/kJ1CqaLWPuKSPR9w==",
       "type": "package",
-      "path": "bybit.net/3.2.5",
+      "path": "bybit.net/3.2.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
-        "bybit.net.3.2.5.nupkg.sha512",
+        "bybit.net.3.2.6.nupkg.sha512",
         "bybit.net.nuspec",
         "icon.png",
         "lib/netstandard2.0/Bybit.Net.dll",
@@ -5411,7 +5411,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Bybit.Net >= 3.2.5",
+      "Bybit.Net >= 3.2.6",
       "ClosedXML.Report >= 0.2.3"
     ]
   },
@@ -5462,7 +5462,7 @@
         "dependencies": {
           "Bybit.Net": {
             "target": "Package",
-            "version": "[3.2.5, )"
+            "version": "[3.2.6, )"
           },
           "ClosedXML.Report": {
             "target": "Package",

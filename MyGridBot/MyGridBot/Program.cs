@@ -9,7 +9,7 @@ namespace MyGridBot
     internal class Program
     {
         static async Task Main(string[] args)
-        {
+        { 
             var dateTime = DateTime.Now;
             Console.Title = "MyGridBot V1.0";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -19,8 +19,8 @@ namespace MyGridBot
             BybitRestClient bybitRestClient = new BybitRestClient(options =>
             {
                 options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
-                options.ReceiveWindow = TimeSpan.FromSeconds(5);
-                options.TimestampRecalculationInterval = TimeSpan.FromSeconds(5);
+                options.ReceiveWindow = TimeSpan.FromSeconds(10);
+                options.TimestampRecalculationInterval = TimeSpan.FromSeconds(3);
                 options.AutoTimestamp = true;
             });
             //bybitRestClient = await ResultTrade.TestTimeSpan(bybitRestClient);
@@ -32,14 +32,14 @@ namespace MyGridBot
                 string response = Console.ReadLine();
 
                 //Создание ексель под торговую пару
-                if (response == "ДА")
+                if (response.ToUpper() == "ДА")
                 {
                     Console.WriteLine(" Укажите торговую пару и нажмите ENTER\n" +
                                       " Пример: BTCUSDT");
                     string tradingPair = Console.ReadLine();
 
                     //Код для создания новой ексель под торговую пару
-                    await NewExcel.TradingPairAsync(tradingPair, bybitRestClient);
+                    await NewExcel.TradingPairAsync(tradingPair.ToUpper(), bybitRestClient);
 
                     Console.WriteLine(" Хотите ещё создать ексель для торговой пары?\n" +
                                       " Напишите ДА или НЕТ и нижмите ENTER");
@@ -54,14 +54,14 @@ namespace MyGridBot
                 string response = Console.ReadLine();
 
                 //Создание ексель под торговую пару
-                if (response == "ДА")
+                if (response.ToUpper() == "ДА")
                 {
                     Console.WriteLine(" Укажите торговую пару и нажмите ENTER\n" +
                                       " Пример: BTCUSDT");
                     string tradingPair = Console.ReadLine();
 
                     //Код для создания сетки под торговую пару
-                    await NewExcel.Setka(tradingPair, bybitRestClient);
+                    await NewExcel.Setka(tradingPair.ToUpper(), bybitRestClient);
 
                     Console.WriteLine(" Хотите ещё создать сетку для торговой пары?\n" +
                                       " Напишите ДА или НЕТ и нижмите ENTER");

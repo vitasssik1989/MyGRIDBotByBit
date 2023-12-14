@@ -47,7 +47,7 @@
           "dependencies": {
             "Bybit.Net": {
               "target": "Package",
-              "version": "[3.2.5, )"
+              "version": "[3.2.6, )"
             },
             "ClosedXML.Report": {
               "target": "Package",

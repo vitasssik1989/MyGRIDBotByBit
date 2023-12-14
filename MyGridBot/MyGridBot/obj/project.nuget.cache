@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "6upVcI3KrgM5sh2vHuwrM4YHh37h39GGXyZVXteNY6I7jGrafmDyYPwBz3b+ez5mAhHJpwHsndfbruDYWapTMA==",
+  "dgSpecHash": "1MO6MKq6C0TDeCxnQGeEheb+v6YnkCS8PfhFvyuGMTj1gl0o9CYy129ho2DcTL05b9ta4iHfuCSrvm+kPwg1Rg==",
   "success": true,
   "projectFilePath": "D:\\MyGridBot\\MyGridBot\\MyGridBot.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\vitas\\.nuget\\packages\\bybit.net\\3.2.5\\bybit.net.3.2.5.nupkg.sha512",
+    "C:\\Users\\vitas\\.nuget\\packages\\bybit.net\\3.2.6\\bybit.net.3.2.6.nupkg.sha512",
     "C:\\Users\\vitas\\.nuget\\packages\\closedxml\\0.95.0\\closedxml.0.95.0.nupkg.sha512",
     "C:\\Users\\vitas\\.nuget\\packages\\closedxml.report\\0.2.3\\closedxml.report.0.2.3.nupkg.sha512",
     "C:\\Users\\vitas\\.nuget\\packages\\cryptoexchange.net\\6.2.3\\cryptoexchange.net.6.2.3.nupkg.sha512",

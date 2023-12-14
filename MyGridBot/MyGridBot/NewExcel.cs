@@ -67,7 +67,14 @@ namespace MyGridBot
                                 string formatCommaPrice = FormatZeroСomma(symbol.PricePrecision);
                                 string formatCommaBase = FormatZeroСomma(symbol.BasePrecision);
                                 sheet.Cell(2, 15).Value = ValueAfterComma(symbol.BasePrecision);
-                                decimal minQty = Math.Round(symbol.MinOrderQuantity + (symbol.MinOrderQuantity / 100 * 0.1m),formatCommaBase.Length-2);
+                                //decimal minQty = Math.Round(symbol.MinOrderQuantity + (symbol.MinOrderQuantity / 100 * 0.1m),formatCommaBase.Length-2);
+                                decimal minQty = symbol.MinOrderQuantity;
+                                sheet.Cell(2, 8).Value = minQty;
+                                while (Convert.ToDecimal(sheet.Cell(2, 7).Value) < symbol.MinOrderQuantity)
+                                {
+                                    minQty += symbol.BasePrecision;
+                                    sheet.Cell(2, 8).Value = minQty;
+                                }
                                 for (int i = 2; i <= 5001; i++)
                                 {
                                     sheet.Cell(i, 1).Value = 0;
@@ -79,7 +86,7 @@ namespace MyGridBot
                                     sheet.Cell(i, 8).AddConditionalFormat().WhenIsTrue($"=D{i}=1")
                                     .Fill.SetBackgroundColor(XLColor.FromHtml("#ffa770"));
                                     sheet.Cell(i, 8).AddConditionalFormat().WhenIsTrue($"=A{i}=1")
-                                   .Fill.SetBackgroundColor(XLColor.FromHtml("#a8ffc5"));
+                                    .Fill.SetBackgroundColor(XLColor.FromHtml("#a8ffc5"));
 
                                     sheet.Cell(i, 9).Style.NumberFormat.Format = "0.00000000000000000000";
                                     sheet.Cell(i, 10).Style.NumberFormat.Format = "0.00000000000000000000";

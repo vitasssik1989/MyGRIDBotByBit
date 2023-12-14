@@ -29,6 +29,11 @@ namespace MyGridBot
             {
                 balance = await bybitRestClient.SpotApiV3.Account.GetBalancesAsync();
                 if (balance.Error == null) { break; }
+                else if(balance.Error.Code == 10002)
+                {
+                    await Task.Delay(2000);
+                    continue;
+                }
                 else
                 {
                     Console.WriteLine($" Ошибка при запросе баланса \n" +
