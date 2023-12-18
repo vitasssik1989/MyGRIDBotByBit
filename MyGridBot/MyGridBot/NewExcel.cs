@@ -155,7 +155,21 @@ namespace MyGridBot
                                 Console.WriteLine($" Введите шаг цены и нажмите ENTER\n" +
                                                   $" Пример ввода: {symbol.PricePrecision}");
                                 decimal priceStep = Kultura(Console.ReadLine());
-
+                                while (true)
+                                {
+                                    if (priceStep < symbol.PricePrecision || priceStep.ToString().Length > symbol.PricePrecision.ToString().Length)
+                                    {
+                                        Console.WriteLine($" Неверно указано кол-во символов: \n" +
+                                                          $" Пример: {symbol.PricePrecision} \n" +
+                                                          $" Вы ввели: {priceStep}\n" +
+                                                          $" Введите шаг цены и нажмите ENTER");
+                                        priceStep = Kultura(Console.ReadLine());
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
                                 Console.WriteLine($" Введите процент и нажмите ENTER\n" +
                                                   $" После запятой не больше 3 цифр\n" +
                                                   $" Пример ввода: 2,125");
