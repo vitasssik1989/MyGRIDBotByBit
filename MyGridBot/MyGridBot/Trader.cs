@@ -144,7 +144,7 @@ namespace MyGridBot
                             var sheet = workbook.Worksheet(1);
                             for (int i = 5001; i >= 2; i--)
                             {
-                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1)
+                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 6).Value) != 2)
                                 {
                                     if (Bid.Price > Convert.ToDecimal(sheet.Cell(i, 3).Value) && Bid.Quantity > Convert.ToDecimal(sheet.Cell(i, 7).Value))
                                     {
@@ -525,7 +525,7 @@ namespace MyGridBot
                             }
                             await Task.Delay(1000);
                         }
-                        else if(resultOrderSell.Error.Code == 10002)
+                        else if (resultOrderSell.Error.Code == 10002)
                         {
                             await Task.Delay(2000);
                             continue;
