@@ -28,7 +28,6 @@ namespace MyGridBot
             {
                 Console.WriteLine();
                 Console.WriteLine($" Торговая пара: {BuySymbol}");
-                Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
                 while (true)
                 {
                     try
@@ -37,6 +36,7 @@ namespace MyGridBot
                         {
                             bool save = false;
                             var sheet = workbook.Worksheet(1);
+                            Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
                             for (int i = 2; i <= 5001; i++)
                             {
                                 if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 6).Value) == 1)
@@ -133,7 +133,6 @@ namespace MyGridBot
             {
                 Console.WriteLine();
                 Console.WriteLine($" Торговая пара: {SellSymbol}");
-                Bid = await BidPriceQuantity(bybitRestClient, SellSymbol);
                 while (true)
                 {
                     try
@@ -142,6 +141,7 @@ namespace MyGridBot
                         {
                             bool save = false;
                             var sheet = workbook.Worksheet(1);
+                            Bid = await BidPriceQuantity(bybitRestClient, SellSymbol);
                             for (int i = 5001; i >= 2; i--)
                             {
                                 if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 6).Value) != 2)
