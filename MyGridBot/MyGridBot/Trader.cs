@@ -112,7 +112,7 @@ namespace MyGridBot
                         }
                         break;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine($" Не смог открыть файл {BuySymbol}.xlsx");
                         Console.WriteLine(ex.Message); Console.ReadLine();
@@ -185,7 +185,7 @@ namespace MyGridBot
                         }
                         break;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine($" Не смог открыть файл {SellSymbol}.xlsx");
                         Console.WriteLine(ex.Message); Console.ReadLine();
@@ -266,86 +266,28 @@ namespace MyGridBot
         static async Task<bool> BuyResult(BybitRestClient bybitRestClient, string BuySymbol, decimal price, decimal quantity, decimal priceEror)
         {
             bool resltBuy = true;
-            WebCallResult<BybitSpotOrderPlaced> result = null;
-            WebCallResult<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> resultOrderBuy = null;
             try
             {
-                result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
-                           (
-                               symbol: BuySymbol,
-                               side: Bybit.Net.Enums.OrderSide.Buy,
-                               type: Bybit.Net.Enums.OrderType.Limit,
-                               price: price,
-                               quantity: quantity,
-                               timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
-                            );
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message} стр 285");
-                Console.ReadLine();
-            }
-
-            if (result.Error == null)
-            {
-                while (true)
-                {
-                    try
-                    {
-                        resultOrderBuy = await bybitRestClient.SpotApiV3.Trading.GetOrderAsync(clientOrderId: result.Data.ClientOrderId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"{ex.Message} стр 299");
-                        Console.ReadLine();
-                    }
-
-                    if (resultOrderBuy.Error == null)
-                    {
-                        if (resultOrderBuy.Data.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                        {
-                            resltBuy = true;
-                            break;
-                        }
-                        else if (resultOrderBuy.Data.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                        {
-                            resltBuy = false;
-                            break;
-                        }
-
-                    }
-                    else if (resultOrderBuy.Error.Code == 10002)
-                    {
-                        await Task.Delay(2000);
-                        continue;
-                    }
-                    else
-                    {
-                        Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                        Console.ReadLine();
-                    }
-                }
-
-            }
-            else if (result.Error.Code == 12193)
-            {
+                WebCallResult<BybitSpotOrderPlaced> result = null;
+                WebCallResult<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> resultOrderBuy = null;
                 try
                 {
                     result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
-                                    (
-                                        symbol: BuySymbol,
-                                        side: Bybit.Net.Enums.OrderSide.Buy,
-                                        type: Bybit.Net.Enums.OrderType.Limit,
-                                        price: priceEror,
-                                        quantity: quantity,
-                                        timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
-                                    );
+                               (
+                                   symbol: BuySymbol,
+                                   side: Bybit.Net.Enums.OrderSide.Buy,
+                                   type: Bybit.Net.Enums.OrderType.Limit,
+                                   price: price,
+                                   quantity: quantity,
+                                   timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
+                                );
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 346");
+                    Console.WriteLine($"{ex.Message} стр 285");
                     Console.ReadLine();
                 }
+
                 if (result.Error == null)
                 {
                     while (true)
@@ -356,7 +298,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 359");
+                            Console.WriteLine($"{ex.Message} стр 299");
                             Console.ReadLine();
                         }
 
@@ -372,7 +314,7 @@ namespace MyGridBot
                                 resltBuy = false;
                                 break;
                             }
-                            await Task.Delay(1000);
+
                         }
                         else if (resultOrderBuy.Error.Code == 10002)
                         {
@@ -382,9 +324,79 @@ namespace MyGridBot
                         else
                         {
                             Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                            Console.WriteLine(" Клас Trader стр 374");
                             Console.ReadLine();
                         }
+                    }
+
+                }
+                else if (result.Error.Code == 12193)
+                {
+                    try
+                    {
+                        result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
+                                        (
+                                            symbol: BuySymbol,
+                                            side: Bybit.Net.Enums.OrderSide.Buy,
+                                            type: Bybit.Net.Enums.OrderType.Limit,
+                                            price: priceEror,
+                                            quantity: quantity,
+                                            timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
+                                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"{ex.Message} стр 346");
+                        Console.ReadLine();
+                    }
+                    if (result.Error == null)
+                    {
+                        while (true)
+                        {
+                            try
+                            {
+                                resultOrderBuy = await bybitRestClient.SpotApiV3.Trading.GetOrderAsync(clientOrderId: result.Data.ClientOrderId);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"{ex.Message} стр 359");
+                                Console.ReadLine();
+                            }
+
+                            if (resultOrderBuy.Error == null)
+                            {
+                                if (resultOrderBuy.Data.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                                {
+                                    resltBuy = true;
+                                    break;
+                                }
+                                else if (resultOrderBuy.Data.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                                {
+                                    resltBuy = false;
+                                    break;
+                                }
+                                await Task.Delay(1000);
+                            }
+                            else if (resultOrderBuy.Error.Code == 10002)
+                            {
+                                await Task.Delay(2000);
+                                continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
+                                Console.WriteLine(" Клас Trader стр 374");
+                                Console.ReadLine();
+                            }
+                        }
+                    }
+                    else if (result.Error.Code == 10002)
+                    {
+                        resltBuy = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
+                        Console.ReadLine();
                     }
                 }
                 else if (result.Error.Code == 10002)
@@ -394,109 +406,73 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
+                    Console.WriteLine(" Клас Trader стр 407");
                     Console.ReadLine();
                 }
+                if (resltBuy == true)
+                {
+                    ResultTrade.Buy++;
+                }
             }
-            else if (result.Error.Code == 10002)
+            catch 
             {
-                resltBuy = false;
+                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                while (histori == null)
+                {
+                    try
+                    {
+                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(BuySymbol, limit: 1)).Data;
+                        if (histori == null) { await Task.Delay(300); continue; }
+                        foreach (var orderHistory in histori)
+                        {
+                            DateTime utcNow = DateTime.UtcNow;
+                            DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
+                            TimeSpan difference = utcNow - newTime;
+                            if (difference.TotalSeconds > 2)
+                            {
+                                resltBuy = false;
+                            }
+                            else
+                            {
+                                if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                                {
+                                    resltBuy = false;
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+
+                }
             }
-            else
-            {
-                Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                Console.WriteLine(" Клас Trader стр 407");
-                Console.ReadLine();
-            }
-            if (resltBuy == true)
-            {
-                ResultTrade.Buy++;
-            }
+
             return resltBuy;
         }
         static async Task<bool> SellResult(BybitRestClient bybitRestClient, string SellSymbol, decimal price, decimal quantity, decimal priceEror)
         {
             bool resltSell = true;
-            WebCallResult<BybitSpotOrderPlaced> result = null;
-            WebCallResult<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> resultOrderSell = null;
             try
             {
-                result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
-                            (
-                                symbol: SellSymbol,
-                                side: Bybit.Net.Enums.OrderSide.Sell,
-                                type: Bybit.Net.Enums.OrderType.Limit,
-                                price: price,
-                                quantity: quantity,
-                                timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
-                             );
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message} стр 435");
-                Console.ReadLine();
-            }
-
-            if (result.Error == null)
-            {
-                while (true)
-                {
-                    try
-                    {
-                        resultOrderSell = await bybitRestClient.SpotApiV3.Trading.GetOrderAsync(clientOrderId: result.Data.ClientOrderId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"{ex.Message} стр 449");
-                        Console.ReadLine();
-                    }
-
-                    if (resultOrderSell.Error == null)
-                    {
-                        if (resultOrderSell.Data.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                        {
-                            resltSell = true;
-                            break;
-                        }
-                        else if (resultOrderSell.Data.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                        {
-                            resltSell = false;
-                            break;
-                        }
-                        await Task.Delay(1000);
-                    }
-                    if (resultOrderSell.Error.Code == 10002)
-                    {
-                        await Task.Delay(2000);
-                        continue;
-                    }
-                    else
-                    {
-                        Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                        Console.WriteLine(" Клас Trader стр 475");
-                        Console.ReadLine();
-                    }
-                }
-
-            }
-            else if (result.Error.Code == 12194)
-            {
+                WebCallResult<BybitSpotOrderPlaced> result = null;
+                WebCallResult<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> resultOrderSell = null;
                 try
                 {
                     result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
-                                    (
-                                        symbol: SellSymbol,
-                                        side: Bybit.Net.Enums.OrderSide.Sell,
-                                        type: Bybit.Net.Enums.OrderType.Limit,
-                                        price: priceEror,
-                                        quantity: quantity,
-                                        timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
-                                    );
+                                (
+                                    symbol: SellSymbol,
+                                    side: Bybit.Net.Enums.OrderSide.Sell,
+                                    type: Bybit.Net.Enums.OrderType.Limit,
+                                    price: price,
+                                    quantity: quantity,
+                                    timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
+                                 );
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 497");
+                    Console.WriteLine($"{ex.Message} стр 435");
                     Console.ReadLine();
                 }
+
                 if (result.Error == null)
                 {
                     while (true)
@@ -507,7 +483,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 510");
+                            Console.WriteLine($"{ex.Message} стр 449");
                             Console.ReadLine();
                         }
 
@@ -525,7 +501,7 @@ namespace MyGridBot
                             }
                             await Task.Delay(1000);
                         }
-                        else if (resultOrderSell.Error.Code == 10002)
+                        if (resultOrderSell.Error.Code == 10002)
                         {
                             await Task.Delay(2000);
                             continue;
@@ -533,9 +509,80 @@ namespace MyGridBot
                         else
                         {
                             Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                            Console.WriteLine(" Клас Trader стр 536");
+                            Console.WriteLine(" Клас Trader стр 475");
                             Console.ReadLine();
                         }
+                    }
+
+                }
+                else if (result.Error.Code == 12194)
+                {
+                    try
+                    {
+                        result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
+                                        (
+                                            symbol: SellSymbol,
+                                            side: Bybit.Net.Enums.OrderSide.Sell,
+                                            type: Bybit.Net.Enums.OrderType.Limit,
+                                            price: priceEror,
+                                            quantity: quantity,
+                                            timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
+                                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"{ex.Message} стр 497");
+                        Console.ReadLine();
+                    }
+                    if (result.Error == null)
+                    {
+                        while (true)
+                        {
+                            try
+                            {
+                                resultOrderSell = await bybitRestClient.SpotApiV3.Trading.GetOrderAsync(clientOrderId: result.Data.ClientOrderId);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"{ex.Message} стр 510");
+                                Console.ReadLine();
+                            }
+
+                            if (resultOrderSell.Error == null)
+                            {
+                                if (resultOrderSell.Data.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                                {
+                                    resltSell = true;
+                                    break;
+                                }
+                                else if (resultOrderSell.Data.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                                {
+                                    resltSell = false;
+                                    break;
+                                }
+                                await Task.Delay(1000);
+                            }
+                            else if (resultOrderSell.Error.Code == 10002)
+                            {
+                                await Task.Delay(2000);
+                                continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
+                                Console.WriteLine(" Клас Trader стр 536");
+                                Console.ReadLine();
+                            }
+                        }
+                    }
+                    else if (result.Error.Code == 10002)
+                    {
+                        resltSell = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
+                        Console.ReadLine();
                     }
                 }
                 else if (result.Error.Code == 10002)
@@ -545,24 +592,44 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
+                    Console.WriteLine(" Клас Trader стр 558");
                     Console.ReadLine();
                 }
+                if (resltSell == true)
+                {
+                    ResultTrade.Sell++;
+                }
             }
-            else if (result.Error.Code == 10002)
+            catch
             {
-                resltSell = false;
+                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                while (histori == null)
+                {
+                    try
+                    {
+                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(SellSymbol, limit: 1)).Data;
+                        if (histori == null) { await Task.Delay(300); continue; }
+                        foreach (var orderHistory in histori)
+                        {
+                            DateTime utcNow = DateTime.UtcNow;
+                            DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
+                            TimeSpan difference = utcNow - newTime;
+                            if (difference.TotalSeconds > 2)
+                            {
+                                resltSell = false;
+                            }
+                            else
+                            {
+                                if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                                {
+                                    resltSell = false;
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+                }
             }
-            else
-            {
-                Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                Console.WriteLine(" Клас Trader стр 558");
-                Console.ReadLine();
-            }
-            if (resltSell == true)
-            {
-                ResultTrade.Sell++;
-            }
-
             return resltSell;
         }
     }
