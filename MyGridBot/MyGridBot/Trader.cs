@@ -112,10 +112,10 @@ namespace MyGridBot
                         }
                         break;
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         Console.WriteLine($" Не смог открыть файл {BuySymbol}.xlsx");
-                        Thread.Sleep(10000);
+                        Console.WriteLine(ex.Message); Console.ReadLine();
                     }
                 }
             }
@@ -185,10 +185,10 @@ namespace MyGridBot
                         }
                         break;
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         Console.WriteLine($" Не смог открыть файл {SellSymbol}.xlsx");
-                        Thread.Sleep(10000);
+                        Console.WriteLine(ex.Message); Console.ReadLine();
                     }
                 }
 
