@@ -9,9 +9,10 @@ namespace MyGridBot
     internal class Program
     {
         static async Task Main(string[] args)
-        { 
+        {
+            ResultTrade.TimerRevers(5);
             var dateTime = DateTime.Now;
-            Console.Title = "MyGridBot V1.1";
+            Console.Title = "BoViGridBot V1.2";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(" Начинаю работу");
             SettingStart.Start();
@@ -70,15 +71,15 @@ namespace MyGridBot
             }
 
             SettingStart.UpdateSymbolList();
-
+            await ResultTrade.Balance(bybitRestClient,dateTime);
 
             while (true)
             {
                 await Trader.Buy(bybitRestClient);
                 await Trader.Sell(bybitRestClient);
-                await ResultTrade.Balance(bybitRestClient,dateTime);
-                SettingStart.UpdateSymbolList();
+                await ResultTrade.Balance(bybitRestClient, dateTime);
                 ResultTrade.TimerRevers(5);
+                SettingStart.UpdateSymbolList();
             }
         }
     }

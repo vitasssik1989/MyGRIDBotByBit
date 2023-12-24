@@ -414,7 +414,7 @@ namespace MyGridBot
                     ResultTrade.Buy++;
                 }
             }
-            catch 
+            catch
             {
                 IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
                 while (histori == null)
@@ -425,20 +425,28 @@ namespace MyGridBot
                         if (histori == null) { await Task.Delay(300); continue; }
                         foreach (var orderHistory in histori)
                         {
-                            DateTime utcNow = DateTime.UtcNow;
-                            DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
-                            TimeSpan difference = utcNow - newTime;
-                            if (difference.TotalSeconds > 2)
+                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Buy && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
                             {
-                                resltBuy = false;
+                                resltBuy = true;
                             }
                             else
                             {
-                                if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                                {
-                                    resltBuy = false;
-                                }
+                                resltBuy = false;
                             }
+                            //DateTime utcNow = DateTime.UtcNow;
+                            //DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
+                            //TimeSpan difference = utcNow - newTime;
+                            //if (difference.TotalSeconds > 2)
+                            //{
+                            //    resltBuy = false;
+                            //}
+                            //else
+                            //{
+                            //    if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                            //    {
+                            //        resltBuy = false;
+                            //    }
+                            //}
                         }
                     }
                     catch { }
@@ -611,20 +619,28 @@ namespace MyGridBot
                         if (histori == null) { await Task.Delay(300); continue; }
                         foreach (var orderHistory in histori)
                         {
-                            DateTime utcNow = DateTime.UtcNow;
-                            DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
-                            TimeSpan difference = utcNow - newTime;
-                            if (difference.TotalSeconds > 2)
+                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Sell && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
                             {
-                                resltSell = false;
+                                resltSell = true;
                             }
                             else
                             {
-                                if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                                {
-                                    resltSell = false;
-                                }
+                                resltSell = false;
                             }
+                            //DateTime utcNow = DateTime.UtcNow;
+                            //DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
+                            //TimeSpan difference = utcNow - newTime;
+                            //if (difference.TotalSeconds > 2)
+                            //{
+                            //    resltSell = false;
+                            //}
+                            //else
+                            //{
+                            //    if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
+                            //    {
+                            //        resltSell = false;
+                            //    }
+                            //}
                         }
                     }
                     catch { }

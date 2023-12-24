@@ -121,17 +121,33 @@ namespace MyGridBot
 
         public static void TimerRevers(int seconds)
         {
-            Console.ForegroundColor= ConsoleColor.White;
+            bool isPaused = false;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-            Console.WriteLine(" Можно остановить консоль и редактировать все ексель файлы");
+            Console.WriteLine(" Нажмите ПРОБЕЛ для остановки\n Что бы редактировать все ексель файлы");
             var dateTime = DateTime.Now;
             DateTime dt = dateTime.AddSeconds(-seconds);
+
+            ConsoleKeyInfo keyInfo;
             while (dateTime >= dt)
             {
-                var ticks = (dateTime - dt).Ticks;
-                Console.WriteLine(new DateTime(ticks).ToString("      HH:mm:ss"));
-                Thread.Sleep(850);
-                dt = dt.AddSeconds(1);
+                if (Console.KeyAvailable)
+                {
+                    keyInfo = Console.ReadKey(true);
+                    if (keyInfo.Key == ConsoleKey.Spacebar)
+                    {
+                        isPaused = !isPaused;
+                        Console.WriteLine(isPaused ? " Таймер приостановлен. \n Можно редактировать ексель\n Нажмите ПРОБЕЛ для продолжения." : " Таймер продолжает работу.");
+                    }
+                }
+
+                if (!isPaused)
+                {
+                    var ticks = (dateTime - dt).Ticks;
+                    Console.WriteLine(new DateTime(ticks).ToString("      HH:mm:ss"));
+                    Thread.Sleep(850);
+                    dt = dt.AddSeconds(1);
+                }
             }
         }
         public static async Task<BybitRestClient> TestTimeSpan(BybitRestClient bybitRestClient)

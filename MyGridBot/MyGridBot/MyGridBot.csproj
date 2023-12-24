@@ -8,6 +8,7 @@
     <ApplicationIcon>cash (3).ico</ApplicationIcon>
     <Authors>$(BoVi)</Authors>
     <Copyright>BoVi</Copyright>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
