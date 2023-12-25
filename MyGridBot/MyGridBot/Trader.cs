@@ -37,8 +37,10 @@ namespace MyGridBot
                             bool save = false;
                             var sheet = workbook.Worksheet(1);
                             Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
+                            int grafic = 0;
                             for (int i = 2; i <= 5001; i++)
                             {
+                                grafic = i;
                                 if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 6).Value) == 1)
                                 { continue; }
                                 if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0)
@@ -108,7 +110,7 @@ namespace MyGridBot
                             {
                                 workbook.Save();
                             }
-
+                            Grafic.Write(grafic);
                         }
                         break;
                     }

@@ -1,4 +1,5 @@
 ﻿using Bybit.Net.Clients;
+using Bybit.Net.Interfaces.Clients;
 using ClosedXML.Excel;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
@@ -119,7 +120,7 @@ namespace MyGridBot
             }
         }
 
-        public static void TimerRevers(int seconds)
+        public static async Task TimerReversAsync(int seconds, BybitRestClient bybitRestClient)
         {
             bool isPaused = false;
             Console.ForegroundColor = ConsoleColor.White;
@@ -138,6 +139,11 @@ namespace MyGridBot
                     {
                         isPaused = !isPaused;
                         Console.WriteLine(isPaused ? " Таймер приостановлен. \n Можно редактировать ексель\n Нажмите ПРОБЕЛ для продолжения." : " Таймер продолжает работу.");
+                        if (!isPaused)
+                        {
+                            await SettingStart.StartNewExelAsync(bybitRestClient);
+                        }
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
 
