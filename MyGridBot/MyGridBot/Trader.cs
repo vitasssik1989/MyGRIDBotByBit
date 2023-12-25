@@ -418,42 +418,29 @@ namespace MyGridBot
             }
             catch
             {
-                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
-                while (histori == null)
-                {
-                    try
-                    {
-                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(BuySymbol, limit: 1)).Data;
-                        if (histori == null) { await Task.Delay(300); continue; }
-                        foreach (var orderHistory in histori)
-                        {
-                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Buy && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                            {
-                                resltBuy = true;
-                            }
-                            else
-                            {
-                                resltBuy = false;
-                            }
-                            //DateTime utcNow = DateTime.UtcNow;
-                            //DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
-                            //TimeSpan difference = utcNow - newTime;
-                            //if (difference.TotalSeconds > 2)
-                            //{
-                            //    resltBuy = false;
-                            //}
-                            //else
-                            //{
-                            //    if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                            //    {
-                            //        resltBuy = false;
-                            //    }
-                            //}
-                        }
-                    }
-                    catch { }
+                resltBuy = true;
+                //IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                //while (histori == null)
+                //{
+                //    try
+                //    {
+                //        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(BuySymbol, limit: 1)).Data;
+                //        if (histori == null) { await Task.Delay(300); continue; }
+                //        foreach (var orderHistory in histori)
+                //        {
+                //            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Buy && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                //            {
+                //                resltBuy = true;
+                //            }
+                //            else
+                //            {
+                //                resltBuy = false;
+                //            }
+                //        }
+                //    }
+                //    catch { }
 
-                }
+                //}
             }
 
             return resltBuy;
@@ -612,41 +599,28 @@ namespace MyGridBot
             }
             catch
             {
-                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
-                while (histori == null)
-                {
-                    try
-                    {
-                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(SellSymbol, limit: 1)).Data;
-                        if (histori == null) { await Task.Delay(300); continue; }
-                        foreach (var orderHistory in histori)
-                        {
-                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Sell && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                            {
-                                resltSell = true;
-                            }
-                            else
-                            {
-                                resltSell = false;
-                            }
-                            //DateTime utcNow = DateTime.UtcNow;
-                            //DateTime newTime = new DateTime(orderHistory.CreateTime.Ticks, DateTimeKind.Utc);
-                            //TimeSpan difference = utcNow - newTime;
-                            //if (difference.TotalSeconds > 2)
-                            //{
-                            //    resltSell = false;
-                            //}
-                            //else
-                            //{
-                            //    if (orderHistory.Status == Bybit.Net.Enums.OrderStatus.Canceled)
-                            //    {
-                            //        resltSell = false;
-                            //    }
-                            //}
-                        }
-                    }
-                    catch { }
-                }
+                resltSell = true;
+                //IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                //while (histori == null)
+                //{
+                //    try
+                //    {
+                //        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(SellSymbol, limit: 1)).Data;
+                //        if (histori == null) { await Task.Delay(300); continue; }
+                //        foreach (var orderHistory in histori)
+                //        {
+                //            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Sell && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                //            {
+                //                resltSell = true;
+                //            }
+                //            else
+                //            {
+                //                resltSell = false;
+                //            }
+                //        }
+                //    }
+                //    catch { }
+                //}
             }
             return resltSell;
         }
