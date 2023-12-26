@@ -62,6 +62,7 @@ namespace MyGridBot
                                                 sheet.Cell(i, 8).Value = Convert.ToDecimal(sheet.Cell(i, 11).Value);
                                                 sheet.Cell(i, 4).Value = 1;
                                                 save = true;
+                                                await Task.Delay(200);
                                             }
                                             else
                                             {
@@ -83,6 +84,7 @@ namespace MyGridBot
                                                 Console.WriteLine(" Заявка исполнилась");
                                                 sheet.Cell(i, 4).Value = 1;
                                                 save = true;
+                                                await Task.Delay(200);
                                             }
                                             else
                                             {
@@ -92,7 +94,7 @@ namespace MyGridBot
 
                                         }
 
-                                        Thread.Sleep(100);
+                                        await Task.Delay(100);
                                         Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
                                     }
                                     else
@@ -159,13 +161,14 @@ namespace MyGridBot
                                             Console.WriteLine(" Заявка исполнилась");
                                             sheet.Cell(i, 4).Value = 0;
                                             save = true;
+                                            await Task.Delay(200);
                                         }
                                         else
                                         {
                                             Console.WriteLine(" Заявка не исполнилась");
                                             break;
                                         }
-                                        Thread.Sleep(100);
+                                        await Task.Delay(100);
                                         Bid = await BidPriceQuantity(bybitRestClient, SellSymbol);
                                     }
                                     else
@@ -286,7 +289,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 285");
+                    Console.WriteLine($"{ex.Message} стр 292");
                     Console.ReadLine();
                 }
 
@@ -300,7 +303,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 299");
+                            Console.WriteLine($"{ex.Message} стр 306");
                             Console.ReadLine();
                         }
 
@@ -347,7 +350,7 @@ namespace MyGridBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 346");
+                        Console.WriteLine($"{ex.Message} стр 353");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -360,7 +363,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 359");
+                                Console.WriteLine($"{ex.Message} стр 366");
                                 Console.ReadLine();
                             }
 
@@ -386,7 +389,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 374");
+                                Console.WriteLine(" Клас Trader стр 392");
                                 Console.ReadLine();
                             }
                         }
@@ -408,7 +411,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 407");
+                    Console.WriteLine(" Клас Trader стр 414");
                     Console.ReadLine();
                 }
                 if (resltBuy == true)
@@ -466,7 +469,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 435");
+                    Console.WriteLine($"{ex.Message} стр 472");
                     Console.ReadLine();
                 }
 
@@ -480,7 +483,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 449");
+                            Console.WriteLine($"{ex.Message} стр 486");
                             Console.ReadLine();
                         }
 
@@ -506,7 +509,7 @@ namespace MyGridBot
                         else
                         {
                             Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                            Console.WriteLine(" Клас Trader стр 475");
+                            Console.WriteLine(" Клас Trader стр 512");
                             Console.ReadLine();
                         }
                     }
@@ -528,7 +531,7 @@ namespace MyGridBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 497");
+                        Console.WriteLine($"{ex.Message} стр 534");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -541,7 +544,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 510");
+                                Console.WriteLine($"{ex.Message} стр 547");
                                 Console.ReadLine();
                             }
 
@@ -567,7 +570,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 536");
+                                Console.WriteLine(" Клас Trader стр 573");
                                 Console.ReadLine();
                             }
                         }
@@ -589,7 +592,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 558");
+                    Console.WriteLine(" Клас Trader стр 595");
                     Console.ReadLine();
                 }
                 if (resltSell == true)
