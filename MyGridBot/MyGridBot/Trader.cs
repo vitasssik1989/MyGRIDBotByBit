@@ -319,7 +319,8 @@ namespace MyGridBot
                                 resltBuy = false;
                                 break;
                             }
-
+                            await Task.Delay(2000);
+                            continue;
                         }
                         else if (resultOrderBuy.Error.Code == 10002)
                         {
@@ -379,7 +380,7 @@ namespace MyGridBot
                                     resltBuy = false;
                                     break;
                                 }
-                                await Task.Delay(1000);
+                                await Task.Delay(1000);continue;
                             }
                             else if (resultOrderBuy.Error.Code == 10002)
                             {
@@ -389,7 +390,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 392");
+                                Console.WriteLine(" Клас Trader стр 393");
                                 Console.ReadLine();
                             }
                         }
@@ -411,7 +412,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 414");
+                    Console.WriteLine(" Клас Trader стр 415");
                     Console.ReadLine();
                 }
                 if (resltBuy == true)
@@ -421,29 +422,29 @@ namespace MyGridBot
             }
             catch
             {
-                resltBuy = true;
-                //IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
-                //while (histori == null)
-                //{
-                //    try
-                //    {
-                //        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(BuySymbol, limit: 1)).Data;
-                //        if (histori == null) { await Task.Delay(300); continue; }
-                //        foreach (var orderHistory in histori)
-                //        {
-                //            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Buy && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                //            {
-                //                resltBuy = true;
-                //            }
-                //            else
-                //            {
-                //                resltBuy = false;
-                //            }
-                //        }
-                //    }
-                //    catch { }
+                //resltBuy = true;
+                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                while (histori == null)
+                {
+                    try
+                    {
+                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(BuySymbol, limit: 1)).Data;
+                        if (histori == null) { await Task.Delay(300); continue; }
+                        foreach (var orderHistory in histori)
+                        {
+                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Buy && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                            {
+                                resltBuy = true;
+                            }
+                            else
+                            {
+                                resltBuy = false;
+                            }
+                        }
+                    }
+                    catch { }
 
-                //}
+                }
             }
 
             return resltBuy;
@@ -469,7 +470,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 472");
+                    Console.WriteLine($"{ex.Message} стр 473");
                     Console.ReadLine();
                 }
 
@@ -499,9 +500,9 @@ namespace MyGridBot
                                 resltSell = false;
                                 break;
                             }
-                            await Task.Delay(1000);
+                            await Task.Delay(1000);continue;
                         }
-                        if (resultOrderSell.Error.Code == 10002)
+                        else if (resultOrderSell.Error.Code == 10002)
                         {
                             await Task.Delay(2000);
                             continue;
@@ -531,7 +532,7 @@ namespace MyGridBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 534");
+                        Console.WriteLine($"{ex.Message} стр 535");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -560,7 +561,7 @@ namespace MyGridBot
                                     resltSell = false;
                                     break;
                                 }
-                                await Task.Delay(1000);
+                                await Task.Delay(1000);continue;
                             }
                             else if (resultOrderSell.Error.Code == 10002)
                             {
@@ -592,7 +593,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 595");
+                    Console.WriteLine(" Клас Trader стр 596");
                     Console.ReadLine();
                 }
                 if (resltSell == true)
@@ -602,28 +603,28 @@ namespace MyGridBot
             }
             catch
             {
-                resltSell = true;
-                //IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
-                //while (histori == null)
-                //{
-                //    try
-                //    {
-                //        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(SellSymbol, limit: 1)).Data;
-                //        if (histori == null) { await Task.Delay(300); continue; }
-                //        foreach (var orderHistory in histori)
-                //        {
-                //            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Sell && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
-                //            {
-                //                resltSell = true;
-                //            }
-                //            else
-                //            {
-                //                resltSell = false;
-                //            }
-                //        }
-                //    }
-                //    catch { }
-                //}
+                //resltSell = true;
+                IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotOrderV3> histori = null;
+                while (histori == null)
+                {
+                    try
+                    {
+                        histori = (await bybitRestClient.SpotApiV3.Trading.GetOrdersAsync(SellSymbol, limit: 1)).Data;
+                        if (histori == null) { await Task.Delay(300); continue; }
+                        foreach (var orderHistory in histori)
+                        {
+                            if (orderHistory.Side == Bybit.Net.Enums.OrderSide.Sell && orderHistory.Status == Bybit.Net.Enums.OrderStatus.Filled)
+                            {
+                                resltSell = true;
+                            }
+                            else
+                            {
+                                resltSell = false;
+                            }
+                        }
+                    }
+                    catch { }
+                }
             }
             return resltSell;
         }
