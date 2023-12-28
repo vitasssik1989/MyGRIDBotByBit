@@ -35,11 +35,15 @@ namespace MyGridBot
                     await Task.Delay(2000);
                     continue;
                 }
-                else
+                else if (balance.Error.Code != null && balance.Error.Message != null)
                 {
                     Console.WriteLine($" Ошибка при запросе баланса \n" +
                                       $" {balance.Error.Code} {balance.Error.Message}");
                     Console.ReadLine();
+                }
+                else
+                {
+                    await Task.Delay(2000);
                 }
             }
 
