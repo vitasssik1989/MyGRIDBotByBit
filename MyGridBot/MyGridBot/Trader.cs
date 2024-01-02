@@ -38,6 +38,46 @@ namespace MyGridBot
                             var sheet = workbook.Worksheet(1);
                             Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
                             int grafic = 0;
+                            
+                            //Трейлинг
+                            if (!sheet.Cell(6, 15).IsEmpty())
+                            {
+                                decimal precent = Convert.ToDecimal(sheet.Cell(6, 15).Value);
+                                decimal strategPrice = Convert.ToDecimal(sheet.Cell(4, 15).Value);
+                                if ( precent > 0)
+                                {
+                                    if (strategPrice == 0)
+                                    {
+                                        sheet.Cell(4, 15).Value = Ask.Price;
+                                        await Task.Delay(100);
+                                        workbook.Save();
+                                        Console.WriteLine($" Работает Трейлинг BUY\n Откат {precent} %");
+                                        break;
+                                    }
+                                    else if (strategPrice > Ask.Price)
+                                    {
+                                        sheet.Cell(4, 15).Value = Ask.Price;
+                                        await Task.Delay(100);
+                                        workbook.Save();
+                                        Console.WriteLine($" Работает Трейлинг BUY\n Откат {precent} %");
+                                        break;
+                                    }
+                                    else if (strategPrice < Ask.Price)
+                                    {
+                                        if (precent <= CalculatePercentage(Ask.Price, strategPrice))
+                                        {
+                                            sheet.Cell(4, 15).Value = Ask.Price;
+                                            await Task.Delay(100);
+                                            workbook.Save();
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($" Работает Трейлинг BUY\n Откат {precent} %");
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                             for (int i = 2; i <= 5001; i++)
                             {
                                 grafic = i;
@@ -146,6 +186,45 @@ namespace MyGridBot
                             bool save = false;
                             var sheet = workbook.Worksheet(1);
                             Bid = await BidPriceQuantity(bybitRestClient, SellSymbol);
+                            //Трейлинг
+                            if (!sheet.Cell(6, 16).IsEmpty())
+                            {
+                                decimal precent = Convert.ToDecimal(sheet.Cell(6, 16).Value);
+                                decimal strategPrice = Convert.ToDecimal(sheet.Cell(4, 16).Value);
+                                if (precent > 0)
+                                {
+                                    if (strategPrice == 0)
+                                    {
+                                        sheet.Cell(4, 16).Value = Bid.Price;
+                                        await Task.Delay(100);
+                                        workbook.Save();
+                                        Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
+                                        break;
+                                    }
+                                    else if (strategPrice < Bid.Price)
+                                    {
+                                        sheet.Cell(4, 16).Value = Bid.Price;
+                                        await Task.Delay(100);
+                                        workbook.Save();
+                                        Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
+                                        break;
+                                    }
+                                    else if (strategPrice > Bid.Price)
+                                    {
+                                        if (precent <= CalculatePercentage(strategPrice, Bid.Price))
+                                        {
+                                            sheet.Cell(4, 16).Value = Bid.Price;
+                                            await Task.Delay(100);
+                                            workbook.Save();
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                             for (int i = 5001; i >= 2; i--)
                             {
                                 if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 6).Value) != 2)
@@ -186,7 +265,6 @@ namespace MyGridBot
                             {
                                 workbook.Save();
                             }
-
                         }
                         break;
                     }
@@ -289,7 +367,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 292");
+                    Console.WriteLine($"{ex.Message} стр 365");
                     Console.ReadLine();
                 }
 
@@ -303,7 +381,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 306");
+                            Console.WriteLine($"{ex.Message} стр 379");
                             Console.ReadLine();
                         }
 
@@ -351,7 +429,7 @@ namespace MyGridBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 353");
+                        Console.WriteLine($"{ex.Message} стр 427");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -364,7 +442,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 366");
+                                Console.WriteLine($"{ex.Message} стр 440");
                                 Console.ReadLine();
                             }
 
@@ -380,7 +458,7 @@ namespace MyGridBot
                                     resltBuy = false;
                                     break;
                                 }
-                                await Task.Delay(1000);continue;
+                                await Task.Delay(1000); continue;
                             }
                             else if (resultOrderBuy.Error.Code == 10002)
                             {
@@ -390,7 +468,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 393");
+                                Console.WriteLine(" Клас Trader стр 466");
                                 Console.ReadLine();
                             }
                         }
@@ -412,7 +490,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 415");
+                    Console.WriteLine(" Клас Trader стр 488");
                     Console.ReadLine();
                 }
                 if (resltBuy == true)
@@ -470,7 +548,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 473");
+                    Console.WriteLine($"{ex.Message} стр 546");
                     Console.ReadLine();
                 }
 
@@ -484,7 +562,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 486");
+                            Console.WriteLine($"{ex.Message} стр 560");
                             Console.ReadLine();
                         }
 
@@ -500,7 +578,7 @@ namespace MyGridBot
                                 resltSell = false;
                                 break;
                             }
-                            await Task.Delay(1000);continue;
+                            await Task.Delay(1000); continue;
                         }
                         else if (resultOrderSell.Error.Code == 10002)
                         {
@@ -510,7 +588,7 @@ namespace MyGridBot
                         else
                         {
                             Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                            Console.WriteLine(" Клас Trader стр 512");
+                            Console.WriteLine(" Клас Trader стр 586");
                             Console.ReadLine();
                         }
                     }
@@ -532,7 +610,7 @@ namespace MyGridBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 535");
+                        Console.WriteLine($"{ex.Message} стр 608");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -545,7 +623,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 547");
+                                Console.WriteLine($"{ex.Message} стр 621");
                                 Console.ReadLine();
                             }
 
@@ -561,7 +639,7 @@ namespace MyGridBot
                                     resltSell = false;
                                     break;
                                 }
-                                await Task.Delay(1000);continue;
+                                await Task.Delay(1000); continue;
                             }
                             else if (resultOrderSell.Error.Code == 10002)
                             {
@@ -571,7 +649,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 573");
+                                Console.WriteLine(" Клас Trader стр 647");
                                 Console.ReadLine();
                             }
                         }
@@ -593,7 +671,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 596");
+                    Console.WriteLine(" Клас Trader стр 669");
                     Console.ReadLine();
                 }
                 if (resltSell == true)
@@ -627,6 +705,12 @@ namespace MyGridBot
                 }
             }
             return resltSell;
+        }
+        public static decimal CalculatePercentage(decimal High, decimal Low)
+        {
+            decimal difference = High - Low;
+            decimal percentage = (difference / Low) * 100;
+            return percentage;
         }
     }
 }
