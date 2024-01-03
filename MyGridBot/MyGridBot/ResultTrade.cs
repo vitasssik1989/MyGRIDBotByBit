@@ -77,7 +77,7 @@ namespace MyGridBot
                                 {
                                     if (coin.Total < Convert.ToDecimal(sheet.Cell(1, 10).Value))
                                     {
-                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель");
+                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 10).Value)-coin.Total}");
                                         Console.ReadLine();
                                     }
                                     else
@@ -104,7 +104,7 @@ namespace MyGridBot
                 {
                     if (coin.Total < TotalBalanceUSDT)
                     {
-                        Console.WriteLine(" USDT на счете меньше чем нужно для сетки");
+                        Console.WriteLine($" USDT на счете меньше чем нужно для сетки,на {TotalBalanceUSDT-coin.Total}");
                         Console.ReadLine();
                     }
                     else
