@@ -170,7 +170,7 @@ namespace MyGridBot
                                         break;
                                     }
                                 }
-                                Console.WriteLine($" Введите процент и нажмите ENTER\n" +
+                                Console.WriteLine($" Введите процент продажи от цены покупки и нажмите ENTER\n" +
                                                   $" После запятой не больше 3 цифр\n" +
                                                   $" Пример ввода: 2,125");
                                 decimal precent = Kultura(Console.ReadLine());

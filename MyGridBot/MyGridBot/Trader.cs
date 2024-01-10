@@ -64,7 +64,7 @@ namespace MyGridBot
                                     }
                                     else if (strategPrice < Ask.Price)
                                     {
-                                        if (precent <= CalculatePercentage(Ask.Price, strategPrice))
+                                        if (strategPrice + (strategPrice / 100 * precent) <= Ask.Price)
                                         {
                                             sheet.Cell(4, 15).Value = Ask.Price;
                                             await Task.Delay(100);
@@ -210,8 +210,8 @@ namespace MyGridBot
                                         break;
                                     }
                                     else if (strategPrice > Bid.Price)
-                                    {
-                                        if (precent <= CalculatePercentage(strategPrice, Bid.Price))
+                                    {       
+                                        if (strategPrice - (strategPrice / 100 * precent) >= Bid.Price)
                                         {
                                             sheet.Cell(4, 16).Value = Bid.Price;
                                             await Task.Delay(100);
@@ -705,12 +705,6 @@ namespace MyGridBot
                 }
             }
             return resltSell;
-        }
-        public static decimal CalculatePercentage(decimal High, decimal Low)
-        {
-            decimal difference = High - Low;
-            decimal percentage = (difference / Low) * 100;
-            return percentage;
         }
     }
 }
