@@ -11,7 +11,7 @@ namespace MyGridBot
         static async Task Main(string[] args)
         {
             var dateTime = DateTime.Now;
-            Console.Title = "BoViGridBot V1.5";
+            Console.Title = "BoViGridBot V1.6";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(" Начинаю работу");
             SettingStart.Start();

@@ -76,6 +76,11 @@ namespace MyGridBot
                                             break;
                                         }
                                     }
+                                    else
+                                    {
+                                        Console.WriteLine($" Работает Трейлинг BUY\n Откат {precent} %");
+                                        break;
+                                    }
                                 }
                             }
                             for (int i = 2; i <= 5001; i++)
@@ -189,13 +194,13 @@ namespace MyGridBot
                             //Трейлинг
                             if (!sheet.Cell(6, 16).IsEmpty())
                             {
-                                decimal precent = Convert.ToDecimal(sheet.Cell(6, 16).Value);
-                                decimal strategPrice = Convert.ToDecimal(sheet.Cell(4, 16).Value);
+                                decimal precent = Convert.ToDecimal(sheet.Cell(6, 16).Value);//0.5
+                                decimal strategPrice = Convert.ToDecimal(sheet.Cell(4, 16).Value);//0
                                 if (precent > 0)
                                 {
                                     if (strategPrice == 0)
                                     {
-                                        sheet.Cell(4, 16).Value = Bid.Price;
+                                        sheet.Cell(4, 16).Value = Bid.Price;//0.0001245
                                         await Task.Delay(100);
                                         workbook.Save();
                                         Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
@@ -222,6 +227,11 @@ namespace MyGridBot
                                             Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
                                             break;
                                         }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine($" Работает Трейлинг SELL\n Откат {precent} %");
+                                        break; 
                                     }
                                 }
                             }
