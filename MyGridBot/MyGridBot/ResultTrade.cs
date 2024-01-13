@@ -46,7 +46,7 @@ namespace MyGridBot
                     await Task.Delay(2000);
                 }
             }
-
+            
             TotalBalanceUSDT = 0;
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine();

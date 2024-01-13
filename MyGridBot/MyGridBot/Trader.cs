@@ -101,7 +101,7 @@ namespace MyGridBot
                                                               $" Кол-во монет: {Convert.ToDecimal(sheet.Cell(i, 11).Value)}\n" +
                                                               $" Реинвестиция: ДА");
 
-                                            if (await BuyResult(bybitRestClient, BuySymbol, Convert.ToDecimal(sheet.Cell(i, 2).Value), Convert.ToDecimal(sheet.Cell(i, 11).Value), Ask.Price))
+                                            if (await BuyResult(bybitRestClient, BuySymbol, Convert.ToDecimal(sheet.Cell(i, 2).Value), Convert.ToDecimal(sheet.Cell(i, 11).Value)))
                                             {
                                                 Console.WriteLine(" Заявка исполнилась");
                                                 sheet.Cell(i, 8).Value = Convert.ToDecimal(sheet.Cell(i, 11).Value);
@@ -124,7 +124,7 @@ namespace MyGridBot
                                                               $" Кол-во монет: {Convert.ToDecimal(sheet.Cell(i, 8).Value)}\n" +
                                                               $" Реинвестиция: НЕТ");
 
-                                            if (await BuyResult(bybitRestClient, BuySymbol, Convert.ToDecimal(sheet.Cell(i, 2).Value), Convert.ToDecimal(sheet.Cell(i, 8).Value), Ask.Price))
+                                            if (await BuyResult(bybitRestClient, BuySymbol, Convert.ToDecimal(sheet.Cell(i, 2).Value), Convert.ToDecimal(sheet.Cell(i, 8).Value)))
                                             {
                                                 Console.WriteLine(" Заявка исполнилась");
                                                 sheet.Cell(i, 4).Value = 1;
@@ -245,7 +245,7 @@ namespace MyGridBot
                                         Console.WriteLine($" Продажа Торговой Пары: {SellSymbol}\n" +
                                                               $" По цене: {Convert.ToDecimal(sheet.Cell(i, 3).Value)} \n" +
                                                               $" Кол-во монет: {Convert.ToDecimal(sheet.Cell(i, 7).Value)}");
-                                        if (await SellResult(bybitRestClient, SellSymbol, Convert.ToDecimal(sheet.Cell(i, 3).Value), Convert.ToDecimal(sheet.Cell(i, 7).Value), Bid.Price))
+                                        if (await SellResult(bybitRestClient, SellSymbol, Convert.ToDecimal(sheet.Cell(i, 3).Value), Convert.ToDecimal(sheet.Cell(i, 7).Value)))
                                         {
                                             Console.WriteLine(" Заявка исполнилась");
                                             sheet.Cell(i, 4).Value = 0;
@@ -356,7 +356,7 @@ namespace MyGridBot
             return orderBookData.Data.Bids.First();
         }
 
-        static async Task<bool> BuyResult(BybitRestClient bybitRestClient, string BuySymbol, decimal price, decimal quantity, decimal priceEror)
+        static async Task<bool> BuyResult(BybitRestClient bybitRestClient, string BuySymbol, decimal price, decimal quantity)
         {
             bool resltBuy = true;
             try
@@ -377,7 +377,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 365");
+                    Console.WriteLine($"{ex.Message} стр 380");
                     Console.ReadLine();
                 }
 
@@ -391,7 +391,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 379");
+                            Console.WriteLine($"{ex.Message} стр 394");
                             Console.ReadLine();
                         }
 
@@ -425,6 +425,7 @@ namespace MyGridBot
                 }
                 else if (result.Error.Code == 12193)
                 {
+                    BybitSpotOrderBookEntry Ask = await AskPriceQuantity(bybitRestClient, BuySymbol);
                     try
                     {
                         result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
@@ -432,14 +433,14 @@ namespace MyGridBot
                                             symbol: BuySymbol,
                                             side: Bybit.Net.Enums.OrderSide.Buy,
                                             type: Bybit.Net.Enums.OrderType.Limit,
-                                            price: priceEror,
+                                            price: Ask.Price,
                                             quantity: quantity,
                                             timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
                                         );
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 427");
+                        Console.WriteLine($"{ex.Message} стр 443");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -452,7 +453,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 440");
+                                Console.WriteLine($"{ex.Message} стр 456");
                                 Console.ReadLine();
                             }
 
@@ -478,7 +479,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderBuy.Error.Code} {resultOrderBuy.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 466");
+                                Console.WriteLine(" Клас Trader стр 482");
                                 Console.ReadLine();
                             }
                         }
@@ -500,7 +501,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 488");
+                    Console.WriteLine(" Клас Trader стр 504");
                     Console.ReadLine();
                 }
                 if (resltBuy == true)
@@ -537,7 +538,7 @@ namespace MyGridBot
 
             return resltBuy;
         }
-        static async Task<bool> SellResult(BybitRestClient bybitRestClient, string SellSymbol, decimal price, decimal quantity, decimal priceEror)
+        static async Task<bool> SellResult(BybitRestClient bybitRestClient, string SellSymbol, decimal price, decimal quantity)
         {
             bool resltSell = true;
             try
@@ -558,7 +559,7 @@ namespace MyGridBot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ex.Message} стр 546");
+                    Console.WriteLine($"{ex.Message} стр 562");
                     Console.ReadLine();
                 }
 
@@ -572,7 +573,7 @@ namespace MyGridBot
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ex.Message} стр 560");
+                            Console.WriteLine($"{ex.Message} стр 576");
                             Console.ReadLine();
                         }
 
@@ -598,7 +599,7 @@ namespace MyGridBot
                         else
                         {
                             Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                            Console.WriteLine(" Клас Trader стр 586");
+                            Console.WriteLine(" Клас Trader стр 602");
                             Console.ReadLine();
                         }
                     }
@@ -606,6 +607,7 @@ namespace MyGridBot
                 }
                 else if (result.Error.Code == 12194)
                 {
+                    BybitSpotOrderBookEntry Bid = await BidPriceQuantity(bybitRestClient, SellSymbol);
                     try
                     {
                         result = await bybitRestClient.SpotApiV3.Trading.PlaceOrderAsync
@@ -613,14 +615,14 @@ namespace MyGridBot
                                             symbol: SellSymbol,
                                             side: Bybit.Net.Enums.OrderSide.Sell,
                                             type: Bybit.Net.Enums.OrderType.Limit,
-                                            price: priceEror,
+                                            price: Bid.Price,
                                             quantity: quantity,
                                             timeInForce: Bybit.Net.Enums.TimeInForce.FillOrKill
                                         );
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message} стр 608");
+                        Console.WriteLine($"{ex.Message} стр 625");
                         Console.ReadLine();
                     }
                     if (result.Error == null)
@@ -633,7 +635,7 @@ namespace MyGridBot
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} стр 621");
+                                Console.WriteLine($"{ex.Message} стр 638");
                                 Console.ReadLine();
                             }
 
@@ -659,7 +661,7 @@ namespace MyGridBot
                             else
                             {
                                 Console.WriteLine($" {resultOrderSell.Error.Code} {resultOrderSell.Error.Message}");
-                                Console.WriteLine(" Клас Trader стр 647");
+                                Console.WriteLine(" Клас Trader стр 664");
                                 Console.ReadLine();
                             }
                         }
@@ -681,7 +683,7 @@ namespace MyGridBot
                 else
                 {
                     Console.WriteLine($" {result.Error.Code} {result.Error.Message}");
-                    Console.WriteLine(" Клас Trader стр 669");
+                    Console.WriteLine(" Клас Trader стр 686");
                     Console.ReadLine();
                 }
                 if (resltSell == true)
