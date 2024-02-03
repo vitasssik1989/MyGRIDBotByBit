@@ -12,27 +12,6 @@ namespace MyGridBot
 {
     internal class NewExcel
     {
-        //string path = @"..\\..\\..\\..\\Work\\ШАБЛОН.xlsx";
-
-        //using (var workbook = new XLWorkbook(path))
-        //{
-        //    var sheet = workbook.Worksheet(1);
-        //    decimal price = 0.0005000m;
-        //    decimal stepprice = 0.0000001m;
-
-        //    for(int i = 2; i <= 5001; i++)
-        //    {
-        //        sheet.Cell(i,2).Value=price;
-        //        price-=stepprice;
-        //        sheet.Cell(i,2).Style.NumberFormat.Format = "0.0000000";
-        //        sheet.Cell(i, 3).Style.NumberFormat.Format = "0.0000000";
-        //        sheet.Cell(i,5).Style.NumberFormat.Format = "0.000";
-        //        sheet.Cell(i, 6).Style.NumberFormat.Format = "0.000";
-        //        sheet.Cell(i, 7).Style.NumberFormat.Format = "0.0000000000";
-        //        sheet.Cell(i, 8).Style.NumberFormat.Format = "0.0000000000";
-        //    }
-        //    workbook.Save();
-        //}
         static string Path { get; set; } = @"..\\..\\..\\..\\Work";
         public static async Task TradingPairAsync(string tradingPair, BybitRestClient bybitRestClient)
         {
@@ -87,6 +66,8 @@ namespace MyGridBot
                                     .Fill.SetBackgroundColor(XLColor.FromHtml("#ffa770"));
                                     sheet.Cell(i, 8).AddConditionalFormat().WhenIsTrue($"=A{i}=1")
                                     .Fill.SetBackgroundColor(XLColor.FromHtml("#a8ffc5"));
+                                    sheet.Cell(i, 8).AddConditionalFormat().WhenIsTrue($"=Q{i}=1")
+                                   .Fill.SetBackgroundColor(XLColor.FromHtml("#FF2400"));
 
                                     sheet.Cell(i, 9).Style.NumberFormat.Format = "0.00000000000000000000";
                                     sheet.Cell(i, 10).Style.NumberFormat.Format = "0.00000000000000000000";
@@ -116,7 +97,6 @@ namespace MyGridBot
                 }
             }
         }
-
         public static async Task Setka(string tradingPair, BybitRestClient bybitRestClient)
         {
             WebCallResult<System.Collections.Generic.IEnumerable<Bybit.Net.Objects.Models.Spot.v3.BybitSpotSymbolV3>> symbolData;
@@ -199,6 +179,159 @@ namespace MyGridBot
                     }
                     break;
                 }
+            }
+        }
+        public static void SortBuySell()
+        {
+            List<decimal> sortBS = new List<decimal>();
+            foreach (var excelSort in SettingStart.SymbolList)
+            {
+                try
+                {
+                    using (var workbook = new XLWorkbook(@$"..\\..\\..\\..\\Work\\{excelSort}.xlsx"))
+                    {
+                        var sheet = workbook.Worksheet(1);
+                        if (!sheet.Cell(7, 16).IsEmpty())
+                        {
+                            if (Convert.ToInt32(sheet.Cell(7, 16).Value) == 1)
+                            {
+                                Console.WriteLine($" Сортирую ексель {excelSort}.xlsx");
+                                for (int s = 0; s < 2; s++)
+                                {
+                                    if (s == 0)
+                                    {
+                                        bool flag = false;
+                                        for (int i = 2; i <= 5001; i++)
+                                        {
+                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0)
+                                            {
+                                                break;
+                                            }
+                                            else if (!flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                {
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                {
+                                                    sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                }
+                                            }
+                                        }
+                                        if (sortBS.Count > 0)
+                                        {
+                                            sortBS.Sort((a, b) => b.CompareTo(a));
+                                        }
+                                        else { break; }
+                                    }
+                                    else
+                                    {
+                                        int sortIndex = 0;
+                                        bool flag = false;
+                                        for (int i = 2; i <= 5001; i++)
+                                        {
+                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0)
+                                            {
+                                                break;
+                                            }
+                                            else if (!flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                {
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                {
+                                                    sheet.Cell(i, 8).Value = sortBS[sortIndex];
+                                                    sortIndex++;
+                                                }
+                                            }
+                                        }
+                                        workbook.Save();
+                                        sortBS.Clear();
+                                    }
+                                }
+
+                                for (int s = 0; s < 2; s++)
+                                {
+                                    if (s == 0)
+                                    {
+                                        bool flag = false;
+                                        for (int i = 5001; i >= 2; i--)
+                                        {
+                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1)
+                                            {
+                                                break;
+                                            }
+                                            else if (!flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                {
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                {
+                                                    sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                }
+                                            }
+                                        }
+                                        if (sortBS.Count > 0)
+                                        {
+                                            sortBS.Sort((a, b) => b.CompareTo(a));
+                                        }
+                                        else { break; }
+                                    }
+                                    else
+                                    {
+                                        int sortIndex = 0;
+                                        bool flag = false;
+                                        for (int i = 5001; i >= 2; i--)
+                                        {
+                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1)
+                                            {
+                                                break;
+                                            }
+                                            else if (!flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                {
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag)
+                                            {
+                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                {
+                                                    sheet.Cell(i, 8).Value = sortBS[sortIndex];
+                                                    sortIndex++;
+                                                }
+                                            }
+                                        }
+                                        workbook.Save();
+                                        sortBS.Clear();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(" Не смог открыть ексель");
+                    Console.WriteLine(ex.Message);
+                    Console.ReadLine();
+                }
+
             }
         }
         static string FormatZeroСomma(decimal PricePrecision)

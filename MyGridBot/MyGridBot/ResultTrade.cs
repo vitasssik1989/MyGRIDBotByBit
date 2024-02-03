@@ -119,6 +119,8 @@ namespace MyGridBot
             Console.WriteLine($" Сделки: Buy: {Buy} Sell: {Sell}");
             if(Copy > 200)
             {
+                //Сортировка
+                NewExcel.SortBuySell();
                 Copy = 0;
                 CopyTable.Copy(@"..\\..\\..\\..\\Work", @"..\\..\\..\\..\\WorkCopy");
             }
@@ -160,26 +162,6 @@ namespace MyGridBot
                 }
             }
         }
-        public static async Task<BybitRestClient> TestTimeSpan(BybitRestClient bybitRestClient)
-        {
-            int t = 5;
-            WebCallResult<IEnumerable<Bybit.Net.Objects.Models.Spot.BybitSpotBalance>> balance = null;
-            while (true)
-            {
-                balance = await bybitRestClient.SpotApiV3.Account.GetBalancesAsync();
-                if (balance.Error == null) { return bybitRestClient; }
-                else if(balance.Error.Code == 10002 )
-                {
-                    t += 5;
-                    bybitRestClient = new BybitRestClient(options =>
-                    {
-                        options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
-                        options.ReceiveWindow = TimeSpan.FromSeconds(t);
-                        options.TimestampRecalculationInterval = TimeSpan.FromSeconds(5);
-                    });
-                }
-            }
-        }
-
+       
     }
 }
