@@ -80,7 +80,7 @@ namespace MyGridBot
 
                                     sheet.Cell(i, 7).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
                                     sheet.Cell(i, 8).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
-                                    
+
                                     sheet.Cell(i, 8).Value = minQty;
                                 }
                                 workbook.SaveAs($@"..\\..\\..\\..\\Work\\{tradingPair}.xlsx");
@@ -137,7 +137,7 @@ namespace MyGridBot
                                 decimal priceStep = Kultura(Console.ReadLine());
                                 while (true)
                                 {
-                                    if (priceStep < symbol.PricePrecision || priceStep.ToString().Length > symbol.PricePrecision.ToString().Length)
+                                    if (priceStep < symbol.PricePrecision || CountTrailingZerosAfterDecimal(priceStep.ToString()) > CountTrailingZerosAfterDecimal(symbol.PricePrecision.ToString()))
                                     {
                                         Console.WriteLine($" Неверно указано кол-во символов: \n" +
                                                           $" Пример: {symbol.PricePrecision} \n" +
@@ -165,7 +165,6 @@ namespace MyGridBot
                                         sheet.Cell(i, 3).Value = MyСalculation(haigPrice, precent, symbol.PricePrecision.ToString());
                                     }
                                     else { break; }
-
                                 }
                                 workbook.Save();
                             }
@@ -195,57 +194,72 @@ namespace MyGridBot
                         {
                             if (Convert.ToInt32(sheet.Cell(7, 16).Value) == 1)
                             {
-                                Console.WriteLine($" Сортирую ексель {excelSort}.xlsx");
+                                Console.WriteLine();
+                                Console.Write(" Сортировка.Пара: ");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                Console.Write($"{excelSort}");
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine();
+
+                                //Сортировка ордеров на продажу
+
+                                Console.Write(" Сортирую ордера! Тип: ");
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write($"Sell");
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine();
                                 for (int s = 0; s < 2; s++)
                                 {
                                     if (s == 0)
                                     {
-                                        bool flag = false;
+                                        int flag = 0;
                                         for (int i = 2; i <= 5001; i++)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0)
+                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                             {
-                                                break;
-                                            }
-                                            else if (!flag)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                if (flag == 0)
                                                 {
-                                                    flag = true;
+                                                    flag = 1;
                                                 }
+                                                else { flag = 2; }
                                             }
-                                            if (flag)
+
+                                            if (flag > 0)
                                             {
                                                 if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
                                                 {
                                                     sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
                                                 }
                                             }
+                                            if (flag == 2) { break; }
                                         }
                                         if (sortBS.Count > 0)
                                         {
                                             sortBS.Sort((a, b) => b.CompareTo(a));
                                         }
-                                        else { break; }
+                                        else
+                                        {
+                                            Console.WriteLine($" Нет ордеров! Тип: Sell");
+                                            break;
+                                        }
                                     }
                                     else
                                     {
                                         int sortIndex = 0;
-                                        bool flag = false;
+                                        int flag = 0;
                                         for (int i = 2; i <= 5001; i++)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0)
+
+                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                             {
-                                                break;
-                                            }
-                                            else if (!flag)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                if (flag == 0)
                                                 {
-                                                    flag = true;
+                                                    flag = 1;
                                                 }
+                                                else { flag = 2; }
                                             }
-                                            if (flag)
+
+                                            if (flag > 0)
                                             {
                                                 if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
                                                 {
@@ -253,62 +267,75 @@ namespace MyGridBot
                                                     sortIndex++;
                                                 }
                                             }
+                                            if (flag == 2) { break; }
                                         }
                                         workbook.Save();
+                                        Console.Write(" Кол-во ордеров: ");
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.Write($"{sortBS.Count}");
+                                        Console.ForegroundColor = ConsoleColor.Blue;
+                                        Console.WriteLine();
                                         sortBS.Clear();
                                     }
                                 }
 
+                                //Сортировка ордеров на покупку
+                                Console.Write(" Сортирую ордера! Тип: ");
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write($"Buy");
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine();
                                 for (int s = 0; s < 2; s++)
                                 {
                                     if (s == 0)
                                     {
-                                        bool flag = false;
+                                        int flag = 0;
                                         for (int i = 5001; i >= 2; i--)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1)
+                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                             {
-                                                break;
-                                            }
-                                            else if (!flag)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                if (flag == 0)
                                                 {
-                                                    flag = true;
+                                                    flag = 1;
                                                 }
+                                                else { flag = 2; }
                                             }
-                                            if (flag)
+
+                                            if (flag > 0)
                                             {
                                                 if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
                                                 {
                                                     sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
                                                 }
                                             }
+                                            if (flag == 2) { break; }
                                         }
                                         if (sortBS.Count > 0)
                                         {
                                             sortBS.Sort((a, b) => b.CompareTo(a));
                                         }
-                                        else { break; }
+                                        else
+                                        {
+                                            Console.WriteLine($" Нет ордеров! Тип: Buy");
+                                            break;
+                                        }
                                     }
                                     else
                                     {
                                         int sortIndex = 0;
-                                        bool flag = false;
+                                        int flag = 0;
                                         for (int i = 5001; i >= 2; i--)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 1)
+                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                             {
-                                                break;
-                                            }
-                                            else if (!flag)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 1).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                                if (flag == 0)
                                                 {
-                                                    flag = true;
+                                                    flag = 1;
                                                 }
+                                                else { flag = 2; }
                                             }
-                                            if (flag)
+
+                                            if (flag > 0)
                                             {
                                                 if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
                                                 {
@@ -316,8 +343,14 @@ namespace MyGridBot
                                                     sortIndex++;
                                                 }
                                             }
+                                            if (flag == 2) { break; }
                                         }
                                         workbook.Save();
+                                        Console.Write(" Кол-во ордеров: ");
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.Write($"{sortBS.Count}");
+                                        Console.ForegroundColor = ConsoleColor.Blue;
+                                        Console.WriteLine();
                                         sortBS.Clear();
                                     }
                                 }
@@ -384,6 +417,28 @@ namespace MyGridBot
         static decimal MyСalculation(decimal price, decimal precent, string PricePrecision)
         {
             return Math.Round(price + (price / 100 * precent), PricePrecision.Length - 2);
+        }
+        public static int CountTrailingZerosAfterDecimal(string input)
+        {
+            // Находим индекс разделителя (запятой или точки)
+            int decimalIndex = input.IndexOfAny(new char[] { ',', '.' });
+
+            // Если запятая не найдена или она в конце строки, возвращаем 0
+            if (decimalIndex == -1 || decimalIndex == input.Length - 1)
+                return 0;
+
+            // Считаем количество нулей после запятой
+            int zeroCount = 0;
+            for (int i = input.Length - 1; i > decimalIndex; i--)
+            {
+                if (input[i] == '.' && input[i] == ',')
+                {
+                    break;
+                }
+                zeroCount++;
+            }
+
+            return zeroCount;
         }
     }
 }

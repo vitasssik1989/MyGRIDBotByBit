@@ -11,7 +11,7 @@ namespace MyGridBot
         static async Task Main(string[] args)
         {
             var dateTime = DateTime.Now;
-            Console.Title = "BoViGridBot V1.8";
+            Console.Title = "BoViGridBot V1.9";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(" Начинаю работу");
             SettingStart.Start();
@@ -23,7 +23,7 @@ namespace MyGridBot
                 options.TimestampRecalculationInterval = TimeSpan.FromSeconds(3);
                 options.AutoTimestamp = true;
             });
-            
+
             await SettingStart.StartNewExelAsync(bybitRestClient);
 
             SettingStart.UpdateSymbolList();

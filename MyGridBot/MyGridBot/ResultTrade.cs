@@ -23,14 +23,14 @@ namespace MyGridBot
         {
             Copy++;
             Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(" Делаю запрос баланса");
             WebCallResult<IEnumerable<Bybit.Net.Objects.Models.Spot.BybitSpotBalance>> balance = null;
             while (true)
             {
                 balance = await bybitRestClient.SpotApiV3.Account.GetBalancesAsync();
                 if (balance.Error == null) { break; }
-                else if(balance.Error.Code == 10002)
+                else if (balance.Error.Code == 10002)
                 {
                     await Task.Delay(2000);
                     continue;
@@ -46,9 +46,8 @@ namespace MyGridBot
                     await Task.Delay(2000);
                 }
             }
-            
+
             TotalBalanceUSDT = 0;
-            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine();
             var dt = DateTime.Now;
             var timeElapsed = dt - dateTime;
@@ -77,12 +76,20 @@ namespace MyGridBot
                                 {
                                     if (coin.Total < Convert.ToDecimal(sheet.Cell(1, 10).Value))
                                     {
-                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 10).Value)-coin.Total}");
+                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 10).Value) - coin.Total}");
                                         Console.ReadLine();
                                     }
                                     else
                                     {
-                                        Console.WriteLine($" Монета: {asset} Профит: {coin.Total - Convert.ToDecimal(sheet.Cell(1, 10).Value)}");
+                                        Console.Write($" Монета: ");
+                                        Console.ForegroundColor = ConsoleColor.Gray;
+                                        Console.Write($"{asset} ");
+                                        Console.ForegroundColor = ConsoleColor.Magenta;
+                                        Console.Write(" Профит: ");
+                                        Console.ForegroundColor = ConsoleColor.Yellow;
+                                        Console.Write($"{coin.Total - Convert.ToDecimal(sheet.Cell(1, 10).Value)}");
+                                        Console.ForegroundColor = ConsoleColor.Magenta;
+                                        Console.WriteLine();
                                         break;
                                     }
                                 }
@@ -104,22 +111,51 @@ namespace MyGridBot
                 {
                     if (coin.Total < TotalBalanceUSDT)
                     {
-                        Console.WriteLine($" USDT на счете меньше чем нужно для сетки,на {TotalBalanceUSDT-coin.Total}");
+                        Console.WriteLine($" USDT на счете меньше чем нужно для сетки,на {TotalBalanceUSDT - coin.Total}");
                         Console.ReadLine();
                     }
                     else
                     {
-                        Console.WriteLine($" Монета: USDT Профит: {coin.Total - TotalBalanceUSDT}");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($" USDT");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(" Профит: ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($"{coin.Total - TotalBalanceUSDT} $");
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine();
                         break;
                     }
 
                 }
             }
-            Console.WriteLine( );
-            Console.WriteLine($" Сделки: Buy: {Buy} Sell: {Sell}");
-            if(Copy > 200)
+            Console.WriteLine();
+            Console.Write($" Сделки: Buy: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{Buy}");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write(" Sell: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{Sell}");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine();
+            
+            if (200 - Copy > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine();
+                Console.Write(" Сортировка будет через (");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"{200 - Copy}");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine(") прокрутов");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+            }
+
+            if (Copy >= 200)
             {
                 //Сортировка
+                Console.ForegroundColor = ConsoleColor.Blue;
                 NewExcel.SortBuySell();
                 Copy = 0;
                 CopyTable.Copy(@"..\\..\\..\\..\\Work", @"..\\..\\..\\..\\WorkCopy");
@@ -162,6 +198,6 @@ namespace MyGridBot
                 }
             }
         }
-       
+
     }
 }
