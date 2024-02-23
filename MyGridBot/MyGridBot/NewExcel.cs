@@ -75,14 +75,14 @@ namespace MyGridBot
 
                                     sheet.Cell(i, 2).Style.NumberFormat.Format = formatCommaPrice;//PricePrecision
                                     sheet.Cell(i, 3).Style.NumberFormat.Format = formatCommaPrice;//PricePrecision
-                                    sheet.Cell(i, 2).Value = 0;
-                                    sheet.Cell(i, 3).Value = 0;
+                                    sheet.Cell(i, 2).Value = 0;                               
 
                                     sheet.Cell(i, 7).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
                                     sheet.Cell(i, 8).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
 
                                     sheet.Cell(i, 8).Value = minQty;
                                 }
+                                sheet.Cell(2, 16).Value = CountTrailingZerosAfterDecimal(symbol.PricePrecision.ToString());
                                 workbook.SaveAs($@"..\\..\\..\\..\\Work\\{tradingPair}.xlsx");
                             }
                             break;
@@ -150,23 +150,26 @@ namespace MyGridBot
                                         break;
                                     }
                                 }
-                                Console.WriteLine($" Введите процент продажи от цены покупки и нажмите ENTER\n" +
-                                                  $" После запятой не больше 3 цифр\n" +
+                                Console.WriteLine($" Введите процент продажи от цены покупки(спред) и нажмите ENTER\n" +
                                                   $" Пример ввода: 2,125");
                                 decimal precent = Kultura(Console.ReadLine());
-                                sheet.Cell(2, 2).Value = haigPrice;
-                                sheet.Cell(2, 3).Value = MyСalculation(haigPrice, precent, symbol.PricePrecision.ToString());
-                                for (int i = 3; i <= 5001; i++)
+                                sheet.Cell(2, 16).Value = CountTrailingZerosAfterDecimal(symbol.PricePrecision.ToString());
+                                sheet.Cell(8, 16).Value = precent;
+
+                                for (int i = 2; i <= 5001; i++)
                                 {
                                     if (haigPrice > 0)
                                     {
-                                        haigPrice -= priceStep;
                                         sheet.Cell(i, 2).Value = haigPrice;
-                                        sheet.Cell(i, 3).Value = MyСalculation(haigPrice, precent, symbol.PricePrecision.ToString());
+                                        haigPrice -= priceStep;
                                     }
                                     else { break; }
                                 }
                                 workbook.Save();
+                                Console.WriteLine(" ВНИМАТЕЛЬНО ПРОЧИТАЙ И НАЖМИ ПОТОМ ENTER\n" +
+                                                  " Спред(%) продажи можешь устанавливать\n" +
+                                                  " в ячейке P8");
+                                Console.ReadLine();
                             }
                             break;
                         }
@@ -413,10 +416,6 @@ namespace MyGridBot
                 }
             }
             return result;
-        }
-        static decimal MyСalculation(decimal price, decimal precent, string PricePrecision)
-        {
-            return Math.Round(price + (price / 100 * precent), PricePrecision.Length - 2);
         }
         public static int CountTrailingZerosAfterDecimal(string input)
         {
