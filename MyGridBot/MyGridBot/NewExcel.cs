@@ -75,7 +75,7 @@ namespace MyGridBot
 
                                     sheet.Cell(i, 2).Style.NumberFormat.Format = formatCommaPrice;//PricePrecision
                                     sheet.Cell(i, 3).Style.NumberFormat.Format = formatCommaPrice;//PricePrecision
-                                    sheet.Cell(i, 2).Value = 0;                               
+                                    sheet.Cell(i, 2).Value = 0;
 
                                     sheet.Cell(i, 7).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
                                     sheet.Cell(i, 8).Style.NumberFormat.Format = formatCommaBase; //BasePrecision
@@ -195,7 +195,8 @@ namespace MyGridBot
                         var sheet = workbook.Worksheet(1);
                         if (!sheet.Cell(7, 16).IsEmpty())
                         {
-                            if (Convert.ToInt32(sheet.Cell(7, 16).Value) == 1)
+                            int sort = Convert.ToInt32(sheet.Cell(7, 16).Value);
+                            if (sort > 0)
                             {
                                 Console.WriteLine();
                                 Console.Write(" Сортировка.Пара: ");
@@ -205,156 +206,161 @@ namespace MyGridBot
                                 Console.WriteLine();
 
                                 //Сортировка ордеров на продажу
-
-                                Console.Write(" Сортирую ордера! Тип: ");
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write($"Sell");
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.WriteLine();
-                                for (int s = 0; s < 2; s++)
+                                if (sort == 1 || sort == 2)
                                 {
-                                    if (s == 0)
+                                    Console.Write(" Сортирую ордера! Тип: ");
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.Write($"Sell");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine();
+                                    for (int s = 0; s < 2; s++)
                                     {
-                                        int flag = 0;
-                                        for (int i = 2; i <= 5001; i++)
+                                        if (s == 0)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                            int flag = 0;
+                                            for (int i = 2; i <= 5001; i++)
                                             {
-                                                if (flag == 0)
+                                                if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                                 {
-                                                    flag = 1;
+                                                    if (flag == 0)
+                                                    {
+                                                        flag = 1;
+                                                    }
+                                                    else { flag = 2; }
                                                 }
-                                                else { flag = 2; }
-                                            }
 
-                                            if (flag > 0)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                if (flag > 0)
                                                 {
-                                                    sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                    if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                    {
+                                                        sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                    }
                                                 }
+                                                if (flag == 2) { break; }
                                             }
-                                            if (flag == 2) { break; }
-                                        }
-                                        if (sortBS.Count > 0)
-                                        {
-                                            sortBS.Sort((a, b) => b.CompareTo(a));
+                                            if (sortBS.Count > 0)
+                                            {
+                                                sortBS.Sort((a, b) => b.CompareTo(a));
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($" Нет ордеров! Тип: Sell");
+                                                break;
+                                            }
                                         }
                                         else
                                         {
-                                            Console.WriteLine($" Нет ордеров! Тип: Sell");
-                                            break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        int sortIndex = 0;
-                                        int flag = 0;
-                                        for (int i = 2; i <= 5001; i++)
-                                        {
-
-                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                            int sortIndex = 0;
+                                            int flag = 0;
+                                            for (int i = 2; i <= 5001; i++)
                                             {
-                                                if (flag == 0)
-                                                {
-                                                    flag = 1;
-                                                }
-                                                else { flag = 2; }
-                                            }
 
-                                            if (flag > 0)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                                 {
-                                                    sheet.Cell(i, 8).Value = sortBS[sortIndex];
-                                                    sortIndex++;
+                                                    if (flag == 0)
+                                                    {
+                                                        flag = 1;
+                                                    }
+                                                    else { flag = 2; }
                                                 }
+
+                                                if (flag > 0)
+                                                {
+                                                    if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 1 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                    {
+                                                        sheet.Cell(i, 8).Value = sortBS[sortIndex];
+                                                        sortIndex++;
+                                                    }
+                                                }
+                                                if (flag == 2) { break; }
                                             }
-                                            if (flag == 2) { break; }
+                                            workbook.Save();
+                                            Console.Write(" Кол-во ордеров: ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write($"{sortBS.Count}");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.WriteLine();
+                                            sortBS.Clear();
                                         }
-                                        workbook.Save();
-                                        Console.Write(" Кол-во ордеров: ");
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.Write($"{sortBS.Count}");
-                                        Console.ForegroundColor = ConsoleColor.Blue;
-                                        Console.WriteLine();
-                                        sortBS.Clear();
                                     }
                                 }
 
                                 //Сортировка ордеров на покупку
-                                Console.Write(" Сортирую ордера! Тип: ");
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write($"Buy");
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.WriteLine();
-                                for (int s = 0; s < 2; s++)
+                                if (sort == 1 || sort == 3)
                                 {
-                                    if (s == 0)
+                                    Console.Write(" Сортирую ордера! Тип: ");
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.Write($"Buy");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine();
+                                    for (int s = 0; s < 2; s++)
                                     {
-                                        int flag = 0;
-                                        for (int i = 5001; i >= 2; i--)
+                                        if (s == 0)
                                         {
-                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                            int flag = 0;
+                                            for (int i = 5001; i >= 2; i--)
                                             {
-                                                if (flag == 0)
+                                                if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                                 {
-                                                    flag = 1;
+                                                    if (flag == 0)
+                                                    {
+                                                        flag = 1;
+                                                    }
+                                                    else { flag = 2; }
                                                 }
-                                                else { flag = 2; }
-                                            }
 
-                                            if (flag > 0)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                if (flag > 0)
                                                 {
-                                                    sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                    if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                    {
+                                                        sortBS.Add(Convert.ToDecimal(sheet.Cell(i, 8).Value));
+                                                    }
                                                 }
+                                                if (flag == 2) { break; }
                                             }
-                                            if (flag == 2) { break; }
-                                        }
-                                        if (sortBS.Count > 0)
-                                        {
-                                            sortBS.Sort((a, b) => b.CompareTo(a));
+                                            if (sortBS.Count > 0)
+                                            {
+                                                sortBS.Sort((a, b) => b.CompareTo(a));
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($" Нет ордеров! Тип: Buy");
+                                                break;
+                                            }
                                         }
                                         else
                                         {
-                                            Console.WriteLine($" Нет ордеров! Тип: Buy");
-                                            break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        int sortIndex = 0;
-                                        int flag = 0;
-                                        for (int i = 5001; i >= 2; i--)
-                                        {
-                                            if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
+                                            int sortIndex = 0;
+                                            int flag = 0;
+                                            for (int i = 5001; i >= 2; i--)
                                             {
-                                                if (flag == 0)
+                                                if (Convert.ToInt32(sheet.Cell(i, 17).Value) == 1)
                                                 {
-                                                    flag = 1;
+                                                    if (flag == 0)
+                                                    {
+                                                        flag = 1;
+                                                    }
+                                                    else { flag = 2; }
                                                 }
-                                                else { flag = 2; }
-                                            }
 
-                                            if (flag > 0)
-                                            {
-                                                if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                if (flag > 0)
                                                 {
-                                                    sheet.Cell(i, 8).Value = sortBS[sortIndex];
-                                                    sortIndex++;
+                                                    if (Convert.ToInt32(sheet.Cell(i, 4).Value) == 0 && Convert.ToInt32(sheet.Cell(i, 1).Value) == 1)
+                                                    {
+                                                        sheet.Cell(i, 8).Value = sortBS[sortIndex];
+                                                        sortIndex++;
+                                                    }
                                                 }
+                                                if (flag == 2) { break; }
                                             }
-                                            if (flag == 2) { break; }
+                                            workbook.Save();
+                                            Console.Write(" Кол-во ордеров: ");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write($"{sortBS.Count}");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.WriteLine();
+                                            sortBS.Clear();
                                         }
-                                        workbook.Save();
-                                        Console.Write(" Кол-во ордеров: ");
-                                        Console.ForegroundColor = ConsoleColor.Green;
-                                        Console.Write($"{sortBS.Count}");
-                                        Console.ForegroundColor = ConsoleColor.Blue;
-                                        Console.WriteLine();
-                                        sortBS.Clear();
                                     }
                                 }
                             }
