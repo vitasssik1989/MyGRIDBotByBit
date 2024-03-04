@@ -38,6 +38,11 @@ namespace MyGridBot
                     await Task.Delay(2000);
                     continue;
                 }
+                else if (balance.Error.Code == 502)
+                {
+                    await Task.Delay(2000);
+                    continue;
+                }
                 else if (balance.Error.Code != null && balance.Error.Message != null)
                 {
                     Console.WriteLine($" Ошибка при запросе баланса \n" +
@@ -74,14 +79,14 @@ namespace MyGridBot
                         {
                             var sheet = workbook.Worksheet(1);
 
-                            TotalBalanceUSDT += Convert.ToDecimal(sheet.Cell(1, 9).Value);
+                            TotalBalanceUSDT += Convert.ToDecimal(sheet.Cell(1, 12).Value);
                             foreach (var coin in balance.Data)
                             {
                                 if (coin.Asset == asset)
                                 {
-                                    if (coin.Total < Convert.ToDecimal(sheet.Cell(1, 10).Value))
+                                    if (coin.Total < Convert.ToDecimal(sheet.Cell(1, 13).Value))
                                     {
-                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 10).Value) - coin.Total}");
+                                        Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 13).Value) - coin.Total}");
                                         Console.ReadLine();
                                     }
                                     else
@@ -92,7 +97,7 @@ namespace MyGridBot
                                         Console.ForegroundColor = ConsoleColor.Magenta;
                                         Console.Write(" Профит: ");
                                         Console.ForegroundColor = ConsoleColor.Yellow;
-                                        Console.Write($"{coin.Total - Convert.ToDecimal(sheet.Cell(1, 10).Value)}");
+                                        Console.Write($"{coin.Total - Convert.ToDecimal(sheet.Cell(1, 13).Value)}");
                                         Console.ForegroundColor = ConsoleColor.Magenta;
                                         Console.WriteLine();
                                         break;
@@ -183,6 +188,11 @@ namespace MyGridBot
                     await Task.Delay(2000);
                     continue;
                 }
+                else if (balance.Error.Code == 502)
+                {
+                    await Task.Delay(2000);
+                    continue;
+                }
                 else if (balance.Error.Code != null && balance.Error.Message != null)
                 {
                     Console.WriteLine($" Ошибка при запросе баланса \n" +
@@ -217,16 +227,16 @@ namespace MyGridBot
                         {
                             var sheet = workbook.Worksheet(1);
 
-                            TotalBalanceUSDT += Convert.ToDecimal(sheet.Cell(1, 9).Value);
+                            TotalBalanceUSDT += Convert.ToDecimal(sheet.Cell(1, 12).Value);
                             foreach (var coins in balance.Data.List)
                             {
                                 foreach (var coin in coins.Assets)
                                 {
                                     if (coin.Asset == asset)
                                     {
-                                        if (coin.WalletBalance < Convert.ToDecimal(sheet.Cell(1, 10).Value))
+                                        if (coin.WalletBalance < Convert.ToDecimal(sheet.Cell(1, 13).Value))
                                         {
-                                            Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 10).Value) - coin.WalletBalance}");
+                                            Console.WriteLine($" Монета:{asset} меньше в наличии чем в ексель,на {Convert.ToDecimal(sheet.Cell(1, 13).Value) - coin.WalletBalance}");
                                             Console.ReadLine();
                                         }
                                         else
@@ -237,7 +247,7 @@ namespace MyGridBot
                                             Console.ForegroundColor = ConsoleColor.Magenta;
                                             Console.Write(" Профит: ");
                                             Console.ForegroundColor = ConsoleColor.Yellow;
-                                            Console.Write($"{coin.WalletBalance - Convert.ToDecimal(sheet.Cell(1, 10).Value)}");
+                                            Console.Write($"{coin.WalletBalance - Convert.ToDecimal(sheet.Cell(1, 13).Value)}");
                                             Console.ForegroundColor = ConsoleColor.Magenta;
                                             Console.WriteLine();
                                             break;

@@ -11,7 +11,7 @@ namespace MyGridBot
         static async Task Main(string[] args)
         {
             var dateTime = DateTime.Now;
-            Console.Title = "BoViGridBot V2.2";
+            Console.Title = "BoViGridBot V2.3";
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(" Начинаю работу");
             SettingStart.Start();
@@ -21,7 +21,7 @@ namespace MyGridBot
                 " Если единый нажмите 1 и нажмите ENTER");
             if (Console.ReadLine()=="0")
             {
-                Console.Title = "BoViGridBot V2.2 Стандартный";
+                Console.Title = "BoViGridBot V2.3 Стандартный";
                 BybitRestClient bybitRestClient = new BybitRestClient(options =>
                 {
                     options.SpotOptions.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
@@ -47,7 +47,7 @@ namespace MyGridBot
             }
             else
             {
-                Console.Title = "BoViGridBot V2.2 Единый";
+                Console.Title = "BoViGridBot V2.3 Единый";
                 BybitRestClient bybitRestClient = new BybitRestClient(options =>
                 {
                     options.V5Options.ApiCredentials = new ApiCredentials(SettingStart.APIkey, SettingStart.APIsecret);
